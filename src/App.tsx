@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { MainLayout } from "@/layouts/MainLayout";
 import { HomePage } from "@/components/HomePage";
 import { SlidingWindowVisualizer } from "@/components/SlidingWindowVisualizer";
@@ -20,7 +20,7 @@ import { ContainsDuplicateVisualizer } from "@/components/ContainsDuplicateVisua
 
 function App() {
   return (
-    <BrowserRouter basename="/dsa-visualizer">
+    <HashRouter>
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
@@ -42,7 +42,7 @@ function App() {
           <Route path="interview-workflow" element={<InterviewGuide />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

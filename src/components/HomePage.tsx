@@ -25,24 +25,24 @@ export function HomePage() {
   return (
     <VStack gap={8} align="stretch" w="full">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-        <Box p={10} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
+        <Box p={{ base: 6, md: 10 }} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
           <VStack align="flex-start" gap={3}>
             <Badge px={3} py={1} borderRadius="full" bg="#c9952e" color="white" fontSize="0.65rem" letterSpacing="0.1em" textTransform="uppercase">
               Interactive Edition
             </Badge>
-            <Heading size="xl" color="#1a1a2e" letterSpacing="-0.02em">
+            <Heading size={{ base: "lg", md: "xl" }} color="#1a1a2e" letterSpacing="-0.02em">
               DSA Playbook
             </Heading>
-            <Text color="#8b8589" fontSize="md" maxW="600px" lineHeight="1.7">
+            <Text color="#8b8589" fontSize={{ base: "sm", md: "md" }} maxW="600px" lineHeight="1.7">
               Visualize data structures and algorithms step-by-step. Each chapter pairs 
               brute-force and optimized solutions with animated explanations — turning 
               abstract patterns into something you can see.
             </Text>
-            <SimpleGrid columns={4} gap={6} w="full" pt={4}>
+            <SimpleGrid columns={{ base: 2, sm: 4 }} gap={{ base: 3, md: 6 }} w="full" pt={4}>
               {HIGHLIGHTS.map(h => (
-                <Box key={h.label} textAlign="center" p={4} bg="#faf6f0" borderRadius="lg">
-                  <Text fontSize="1.5rem" fontWeight="700" color="#c9952e">{h.value}</Text>
-                  <Text fontSize="0.75rem" color="#8b8589" mt={1}>{h.label}</Text>
+                <Box key={h.label} textAlign="center" p={{ base: 2, md: 4 }} bg="#faf6f0" borderRadius="lg">
+                  <Text fontSize={{ base: "1.1rem", md: "1.5rem" }} fontWeight="700" color="#c9952e">{h.value}</Text>
+                  <Text fontSize="0.65rem" color="#8b8589" mt={1}>{h.label}</Text>
                 </Box>
               ))}
             </SimpleGrid>
@@ -52,7 +52,7 @@ export function HomePage() {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
         <Heading size="sm" color="#8b8589" textTransform="uppercase" letterSpacing="0.1em" mb={4}>Chapters</Heading>
-        <SimpleGrid columns={2} gap={4}>
+        <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
           {CHAPTERS.map((ch, i) => {
             const available = ch.problems.length > 0;
             return (

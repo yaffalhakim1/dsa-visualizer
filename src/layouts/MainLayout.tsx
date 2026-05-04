@@ -1,6 +1,15 @@
-import { Box, Flex, VStack, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, VStack, Heading, Text, IconButton } from "@chakra-ui/react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { GlobalControlBar } from "@/components/GlobalControlBar";
+import { Menu } from "lucide-react";
+import {
+  DrawerBackdrop,
+  DrawerBody,
+  DrawerCloseTrigger,
+  DrawerContent,
+  DrawerRoot,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 const LC = "https://leetcode.com/problems";
 
@@ -146,268 +155,288 @@ const CHAPTERS: Chapter[] = [
   },
 ];
 
+function SidebarContent({ isActive }: { isActive: (path: string) => boolean }) {
+  return (
+    <VStack
+      bg="#1a1a2e"
+      p="1.5rem"
+      align="stretch"
+      gap="1.5rem"
+      flexShrink={0}
+      h="full"
+      overflowY="auto"
+    >
+      <Box borderBottom="1px solid" borderColor="rgba(232,224,214,0.12)" pb="1rem">
+        <Heading color="#c9952e" size="md" letterSpacing="0.02em">
+          DSA Playbook
+        </Heading>
+        <Text
+          fontSize="0.7rem"
+          color="#8b8589"
+          mt="0.25rem"
+          textTransform="uppercase"
+          letterSpacing="0.15em"
+          fontWeight="500"
+        >
+          Interactive Edition
+        </Text>
+      </Box>
+
+      <VStack align="stretch" gap="0.25rem" flex="1">
+        <Text
+          fontSize="0.65rem"
+          color="#5c5660"
+          textTransform="uppercase"
+          letterSpacing="0.15em"
+          fontWeight="500"
+          mb="0.25rem"
+        >
+          Chapters
+        </Text>
+
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <Flex
+            align="center"
+            gap="0.5rem"
+            p="0.5rem"
+            borderRadius="0.25rem"
+            transition="all 0.15s"
+            bg={isActive("/") ? "rgba(201,149,46,0.1)" : "transparent"}
+            _hover={{ bg: "rgba(232,224,214,0.05)" }}
+          >
+            <Box
+              w="3px"
+              h="1rem"
+              borderRadius="full"
+              bg={isActive("/") ? "#c9952e" : "transparent"}
+              flexShrink={0}
+            />
+            <Text
+              fontSize="0.8125rem"
+              color={isActive("/") ? "#e8e0d6" : "#8b8589"}
+              fontWeight={isActive("/") ? 500 : 400}
+            >
+              Home
+            </Text>
+          </Flex>
+        </Link>
+
+        <Link to="/interview-workflow" style={{ textDecoration: "none" }}>
+          <Flex
+            align="center"
+            gap="0.5rem"
+            p="0.5rem"
+            borderRadius="0.25rem"
+            transition="all 0.15s"
+            bg={isActive("/interview-workflow") ? "rgba(201,149,46,0.1)" : "transparent"}
+            _hover={{ bg: "rgba(232,224,214,0.05)" }}
+          >
+            <Box
+              w="3px"
+              h="1rem"
+              borderRadius="full"
+              bg={isActive("/interview-workflow") ? "#c9952e" : "transparent"}
+              flexShrink={0}
+            />
+            <Text
+              fontSize="0.8125rem"
+              color={isActive("/interview-workflow") ? "#e8e0d6" : "#8b8589"}
+              fontWeight={isActive("/interview-workflow") ? 500 : 400}
+            >
+              7-Step Workflow
+            </Text>
+          </Flex>
+        </Link>
+
+        {CHAPTERS.map((ch) => {
+          const active = ch.path ? isActive(ch.path) : false;
+          const isDisabled = !ch.path && !ch.problems;
+          const isItemActive = active;
+
+          const chapterFlex = (
+            <Flex
+              align="center"
+              gap="0.5rem"
+              p="0.5rem"
+              borderRadius="0.25rem"
+              opacity={isDisabled ? 0.35 : 1}
+              _hover={isDisabled ? {} : { bg: "rgba(232,224,214,0.05)" }}
+            >
+              <Box
+                w="3px"
+                h="1rem"
+                borderRadius="full"
+                bg={isItemActive ? "#c9952e" : "transparent"}
+                flexShrink={0}
+              />
+              <Text
+                fontSize="0.875rem"
+                color={isItemActive ? "#e8e0d6" : "#8b8589"}
+                fontWeight={isItemActive ? 600 : 400}
+                fontFamily="'Playfair Display', serif"
+                flex="1"
+              >
+                Ch {ch.id}: {ch.name}
+              </Text>
+              {isDisabled && (
+                <Text fontSize="0.6rem" color="#5c5660" letterSpacing="0.1em">
+                  Soon
+                </Text>
+              )}
+            </Flex>
+          );
+
+          return (
+            <Box key={ch.id}>
+              {ch.path ? (
+                <Link to={ch.path} style={{ textDecoration: "none" }}>
+                  {chapterFlex}
+                </Link>
+              ) : (
+                chapterFlex
+              )}
+              {ch.problems && (
+                <VStack align="stretch" pl="1.5rem" gap="0" mt="0.125rem">
+                  {ch.problems.map((p, i) => {
+                    const inner = (
+                      <Flex
+                        align="center"
+                        gap="0.5rem"
+                        p="0.375rem 0.5rem"
+                        borderRadius="0.25rem"
+                        fontSize="0.75rem"
+                        color="#8b8589"
+                        transition="all 0.15s"
+                        cursor="pointer"
+                        _hover={{
+                          bg: "rgba(232,224,214,0.05)",
+                          color: "#e8e0d6",
+                        }}
+                      >
+                        <Text fontSize="0.55rem" color="#5c5660" minW="14px">
+                          {i + 1}.
+                        </Text>
+                        <Text>{p.name}</Text>
+                      </Flex>
+                    );
+                    if (p.route)
+                      return (
+                        <Link key={p.route} to={p.route} style={{ textDecoration: "none" }}>
+                          {inner}
+                        </Link>
+                      );
+                    if (p.url)
+                      return (
+                        <Box
+                          key={i}
+                          as="a"
+                          //@ts-ignore
+                          href={p.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ textDecoration: "none" }}
+                        >
+                          {inner}
+                        </Box>
+                      );
+                    return (
+                      <Box key={i} opacity={0.35}>
+                        {inner}
+                      </Box>
+                    );
+                  })}
+                </VStack>
+              )}
+            </Box>
+          );
+        })}
+
+        <Link to="/patterns-mistakes" style={{ textDecoration: "none" }}>
+          <Flex
+            align="center"
+            gap="0.5rem"
+            p="0.5rem"
+            borderRadius="0.25rem"
+            transition="all 0.15s"
+            mt={1}
+            bg={isActive("/patterns-mistakes") ? "rgba(201,149,46,0.1)" : "transparent"}
+            _hover={{ bg: "rgba(232,224,214,0.05)" }}
+          >
+            <Box
+              w="3px"
+              h="1rem"
+              borderRadius="full"
+              bg={isActive("/patterns-mistakes") ? "#c9952e" : "transparent"}
+              flexShrink={0}
+            />
+            <Text
+              fontSize="0.8125rem"
+              color={isActive("/patterns-mistakes") ? "#e8e0d6" : "#8b8589"}
+              fontWeight={isActive("/patterns-mistakes") ? 500 : 400}
+            >
+              Patterns & Mistakes
+            </Text>
+          </Flex>
+        </Link>
+      </VStack>
+    </VStack>
+  );
+}
+
 export function MainLayout() {
   const location = useLocation();
-
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <Flex h="100vh" direction="column" bg="#f5f0eb">
       <Flex flex="1" overflow="hidden">
-        <VStack
-          w="16.25rem"
+        {/* Desktop Sidebar */}
+        <Box display={{ base: "none", md: "block" }} w="16.25rem" flexShrink={0}>
+          <SidebarContent isActive={isActive} />
+        </Box>
+
+        {/* Mobile Header */}
+        <Box
+          display={{ base: "block", md: "none" }}
+          position="fixed"
+          top={0}
+          left={0}
+          right={0}
+          zIndex={100}
           bg="#1a1a2e"
-          p="1.5rem"
-          align="stretch"
-          gap="1.5rem"
-          flexShrink={0}
+          p={3}
+          borderBottom="1px solid"
+          borderColor="rgba(232,224,214,0.1)"
         >
-          <Box
-            borderBottom="1px solid"
-            borderColor="rgba(232,224,214,0.12)"
-            pb="1rem"
-          >
-            <Heading color="#c9952e" size="md" letterSpacing="0.02em">
+          <Flex align="center" justify="space-between">
+            <Heading color="#c9952e" size="sm" letterSpacing="0.02em">
               DSA Playbook
             </Heading>
-            <Text
-              fontSize="0.7rem"
-              color="#8b8589"
-              mt="0.25rem"
-              textTransform="uppercase"
-              letterSpacing="0.15em"
-              fontWeight="500"
-            >
-              Interactive Edition
-            </Text>
-          </Box>
+            <DrawerRoot placement="start">
+              <DrawerBackdrop />
+              <DrawerTrigger asChild>
+                <IconButton aria-label="Open Menu" variant="ghost" color="#c9952e" size="sm">
+                  <Menu size={20} />
+                </IconButton>
+              </DrawerTrigger>
+              <DrawerContent bg="#1a1a2e" p={0}>
+                <DrawerCloseTrigger color="white" top={4} right={4} />
+                <DrawerBody p={0}>
+                  <SidebarContent isActive={isActive} />
+                </DrawerBody>
+              </DrawerContent>
+            </DrawerRoot>
+          </Flex>
+        </Box>
 
-          <VStack align="stretch" gap="0.25rem" flex="1" overflowY="auto">
-            <Text
-              fontSize="0.65rem"
-              color="#5c5660"
-              textTransform="uppercase"
-              letterSpacing="0.15em"
-              fontWeight="500"
-              mb="0.25rem"
-            >
-              Chapters
-            </Text>
-
-            <Link to="/" style={{ textDecoration: "none" }}>
-              <Flex
-                align="center"
-                gap="0.5rem"
-                p="0.5rem"
-                borderRadius="0.25rem"
-                transition="all 0.15s"
-                bg={isActive("/") ? "rgba(201,149,46,0.1)" : "transparent"}
-                _hover={{ bg: "rgba(232,224,214,0.05)" }}
-              >
-                <Box
-                  w="3px"
-                  h="1rem"
-                  borderRadius="full"
-                  bg={isActive("/") ? "#c9952e" : "transparent"}
-                  flexShrink={0}
-                />
-                <Text
-                  fontSize="0.8125rem"
-                  color={isActive("/") ? "#e8e0d6" : "#8b8589"}
-                  fontWeight={isActive("/") ? 500 : 400}
-                >
-                  Home
-                </Text>
-              </Flex>
-            </Link>
-
-            <Link to="/interview-workflow" style={{ textDecoration: "none" }}>
-              <Flex
-                align="center"
-                gap="0.5rem"
-                p="0.5rem"
-                borderRadius="0.25rem"
-                transition="all 0.15s"
-                bg={
-                  isActive("/interview-workflow")
-                    ? "rgba(201,149,46,0.1)"
-                    : "transparent"
-                }
-                _hover={{ bg: "rgba(232,224,214,0.05)" }}
-              >
-                <Box
-                  w="3px"
-                  h="1rem"
-                  borderRadius="full"
-                  bg={
-                    isActive("/interview-workflow") ? "#c9952e" : "transparent"
-                  }
-                  flexShrink={0}
-                />
-                <Text
-                  fontSize="0.8125rem"
-                  color={
-                    isActive("/interview-workflow") ? "#e8e0d6" : "#8b8589"
-                  }
-                  fontWeight={isActive("/interview-workflow") ? 500 : 400}
-                >
-                  7-Step Workflow
-                </Text>
-              </Flex>
-            </Link>
-
-            {CHAPTERS.map((ch) => {
-              const active = ch.path ? isActive(ch.path) : false;
-              const isDisabled = !ch.path && !ch.problems;
-              const isItemActive = active;
-
-              const chapterFlex = (
-                <Flex
-                  align="center"
-                  gap="0.5rem"
-                  p="0.5rem"
-                  borderRadius="0.25rem"
-                  opacity={isDisabled ? 0.35 : 1}
-                  _hover={isDisabled ? {} : { bg: "rgba(232,224,214,0.05)" }}
-                >
-                  <Box
-                    w="3px"
-                    h="1rem"
-                    borderRadius="full"
-                    bg={isItemActive ? "#c9952e" : "transparent"}
-                    flexShrink={0}
-                  />
-                  <Text
-                    fontSize="0.875rem"
-                    color={isItemActive ? "#e8e0d6" : "#8b8589"}
-                    fontWeight={isItemActive ? 600 : 400}
-                    fontFamily="'Playfair Display', serif"
-                    flex="1"
-                  >
-                    Ch {ch.id}: {ch.name}
-                  </Text>
-                  {isDisabled && (
-                    <Text
-                      fontSize="0.6rem"
-                      color="#5c5660"
-                      letterSpacing="0.1em"
-                    >
-                      Soon
-                    </Text>
-                  )}
-                </Flex>
-              );
-
-              return (
-                <Box key={ch.id}>
-                  {ch.path ? (
-                    <Link to={ch.path} style={{ textDecoration: "none" }}>
-                      {chapterFlex}
-                    </Link>
-                  ) : (
-                    chapterFlex
-                  )}
-                  {ch.problems && (
-                    <VStack align="stretch" pl="1.5rem" gap="0" mt="0.125rem">
-                      {ch.problems.map((p, i) => {
-                        const inner = (
-                          <Flex
-                            align="center"
-                            gap="0.5rem"
-                            p="0.375rem 0.5rem"
-                            borderRadius="0.25rem"
-                            fontSize="0.75rem"
-                            color="#8b8589"
-                            transition="all 0.15s"
-                            cursor="pointer"
-                            _hover={{
-                              bg: "rgba(232,224,214,0.05)",
-                              color: "#e8e0d6",
-                            }}
-                          >
-                            <Text
-                              fontSize="0.55rem"
-                              color="#5c5660"
-                              minW="14px"
-                            >
-                              {i + 1}.
-                            </Text>
-                            <Text>{p.name}</Text>
-                          </Flex>
-                        );
-                        if (p.route)
-                          return (
-                            <Link
-                              key={p.route}
-                              to={p.route}
-                              style={{ textDecoration: "none" }}
-                            >
-                              {inner}
-                            </Link>
-                          );
-                        if (p.url)
-                          return (
-                            <Box
-                              key={i}
-                              as="a"
-                              //@ts-ignore
-                              href={p.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              style={{ textDecoration: "none" }}
-                            >
-                              {inner}
-                            </Box>
-                          );
-                        return (
-                          <Box key={i} opacity={0.35}>
-                            {inner}
-                          </Box>
-                        );
-                      })}
-                    </VStack>
-                  )}
-                </Box>
-              );
-            })}
-
-            <Link to="/patterns-mistakes" style={{ textDecoration: "none" }}>
-              <Flex
-                align="center"
-                gap="0.5rem"
-                p="0.5rem"
-                borderRadius="0.25rem"
-                transition="all 0.15s"
-                mt={1}
-                bg={
-                  isActive("/patterns-mistakes")
-                    ? "rgba(201,149,46,0.1)"
-                    : "transparent"
-                }
-                _hover={{ bg: "rgba(232,224,214,0.05)" }}
-              >
-                <Box
-                  w="3px"
-                  h="1rem"
-                  borderRadius="full"
-                  bg={
-                    isActive("/patterns-mistakes") ? "#c9952e" : "transparent"
-                  }
-                  flexShrink={0}
-                />
-                <Text
-                  fontSize="0.8125rem"
-                  color={isActive("/patterns-mistakes") ? "#e8e0d6" : "#8b8589"}
-                  fontWeight={isActive("/patterns-mistakes") ? 500 : 400}
-                >
-                  Patterns & Mistakes
-                </Text>
-              </Flex>
-            </Link>
-          </VStack>
-        </VStack>
-
-        <Box flex="1" p="2rem" overflowY="auto" pb="6.25rem" bg="#f5f0eb">
+        <Box
+          flex="1"
+          p={{ base: "1rem", md: "2rem" }}
+          pt={{ base: "4.5rem", md: "2rem" }}
+          overflowY="auto"
+          pb="8rem"
+          bg="#f5f0eb"
+        >
           <Box maxW="1000px" mx="auto">
             <Outlet />
           </Box>
