@@ -169,7 +169,7 @@ export function DailyTemperaturesVisualizer() {
           <Text fontSize="0.65rem" color="#8b8589" textTransform="uppercase" letterSpacing="0.1em" fontWeight="600" mb={2}>Stack (indices)</Text>
           <Flex gap={2} minH="48px" align="center">
             <AnimatePresence>
-              {s.stack.map((idx, i) => (
+              {s.stack.map((idx) => (
                 <motion.div key={`s-${idx}`} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} transition={{ duration: 0.2 }}>
                   <Flex w="52px" h="40px" align="center" justify="center" borderRadius="md" bg="#1a1a2e" color="white" fontSize="0.8rem" fontWeight={600}>{idx}</Flex>
                 </motion.div>
