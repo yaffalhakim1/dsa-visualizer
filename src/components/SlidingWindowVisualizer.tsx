@@ -139,7 +139,7 @@ export function SlidingWindowVisualizer() {
           </Flex>
         </Flex>
         
-        <Text fontSize="sm" color="gray.500" italic>
+        <Text fontSize="sm" color="gray.500" fontStyle="italic">
           Drag handles to see O(1) incremental update animation.
         </Text>
       </Box>
