@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";

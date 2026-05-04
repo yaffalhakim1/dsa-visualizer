@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 
@@ -32,8 +32,6 @@ interface StepInfo {
   activeLines: number[];
 }
 
-const MAX_DEPTH_ITER = 6;
-
 const BRUTE_FORCE = `def height(node):
     if not node:
         return 0
@@ -59,12 +57,6 @@ function collectPreorder(node: TreeNode, order: TreeNode[]): TreeNode[] {
   if (node.left) collectPreorder(node.left, order);
   if (node.right) collectPreorder(node.right, order);
   return order;
-}
-
-function getNodeById(id: number): TreeNode | null {
-  const all: TreeNode[] = [];
-  collectPreorder(tree, all);
-  return all.find(n => n.id === id) || null;
 }
 
 function computeDepth(node: TreeNode, depths: Map<number, number>): number {

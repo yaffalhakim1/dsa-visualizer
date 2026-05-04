@@ -4,7 +4,20 @@ import { GlobalControlBar } from "@/components/GlobalControlBar";
 
 const LC = "https://leetcode.com/problems";
 
-const CHAPTERS = [
+interface Problem {
+  name: string;
+  route?: string;
+  url?: string | null;
+}
+
+interface Chapter {
+  id: number;
+  name: string;
+  path?: string;
+  problems?: Problem[];
+}
+
+const CHAPTERS: Chapter[] = [
   {
     id: 6,
     name: "Arrays & Strings",
@@ -337,6 +350,7 @@ export function MainLayout() {
                             <Box
                               key={i}
                               as="a"
+                              //@ts-ignore
                               href={p.url}
                               target="_blank"
                               rel="noopener noreferrer"

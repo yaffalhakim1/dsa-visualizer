@@ -12,7 +12,7 @@ type StepStatus = 'setup' | 'rewiring' | 'done';
 
 interface ReverseStep {
   prev: number | null;
-  curr: number;
+  curr: number | null;
   next: number | null;
   reversed: number[];
   remaining: number[];
