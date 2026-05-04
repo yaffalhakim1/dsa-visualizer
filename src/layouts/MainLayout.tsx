@@ -1,4 +1,4 @@
-import { Box, Flex, VStack, Heading, Text, IconButton } from "@chakra-ui/react";
+import { Box, Flex, VStack, Heading, Text, IconButton, Link as ChakraLink } from "@chakra-ui/react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { GlobalControlBar } from "@/components/GlobalControlBar";
 import { Menu } from "lucide-react";
@@ -11,6 +11,9 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
+/**
+ * CONFIGURATION & CONSTANTS
+ */
 const LC = "https://leetcode.com/problems";
 
 interface Problem {
@@ -33,10 +36,7 @@ const CHAPTERS: Chapter[] = [
     problems: [
       { name: "Two Sum", route: "/ch6/two-sum" },
       { name: "Best Time to Buy & Sell Stock", route: "/ch6/best-time" },
-      {
-        name: "Product of Array Except Self",
-        route: "/ch6/product-except-self",
-      },
+      { name: "Product of Array Except Self", route: "/ch6/product-except-self" },
       { name: "Maximum Subarray (Kadane's)", route: "/ch6/maximum-subarray" },
       { name: "Contains Duplicate", route: "/ch6/contains-duplicate" },
     ],
@@ -49,29 +49,19 @@ const CHAPTERS: Chapter[] = [
       { name: "Reverse Linked List", url: `${LC}/reverse-linked-list/` },
       { name: "Merge Two Sorted Lists", url: `${LC}/merge-two-sorted-lists/` },
       { name: "Linked List Cycle", url: `${LC}/linked-list-cycle/` },
-      {
-        name: "Remove Nth Node From End",
-        url: `${LC}/remove-nth-node-from-end-of-list/`,
-      },
-      {
-        name: "Middle of Linked List",
-        url: `${LC}/middle-of-the-linked-list/`,
-      },
+      { name: "Remove Nth Node From End", url: `${LC}/remove-nth-node-from-end-of-list/` },
+      { name: "Middle of Linked List", url: `${LC}/middle-of-the-linked-list/` },
     ],
   },
   {
     id: 8,
     name: "Stacks & Queues",
-    path: "/stacks-queues",
     problems: [
-      { name: "Valid Parentheses", url: `${LC}/valid-parentheses/` },
-      { name: "Min Stack", url: `${LC}/min-stack/` },
-      { name: "Daily Temperatures", url: `${LC}/daily-temperatures/` },
-      { name: "Evaluate RPN", url: `${LC}/evaluate-reverse-polish-notation/` },
-      {
-        name: "Queue Using Stacks",
-        url: `${LC}/implement-queue-using-stacks/`,
-      },
+      { name: "Valid Parentheses", route: "/ch8/valid-parentheses" },
+      { name: "Min Stack", route: "/ch8/min-stack" },
+      { name: "Daily Temperatures", route: "/ch8/daily-temperatures" },
+      { name: "Evaluate RPN", route: "/ch8/evaluate-rpn" },
+      { name: "Queue Using Stacks", route: "/ch8/queue-using-stacks" },
     ],
   },
   {
@@ -79,16 +69,10 @@ const CHAPTERS: Chapter[] = [
     name: "Trees",
     path: "/trees",
     problems: [
-      {
-        name: "Max Depth of Binary Tree",
-        url: `${LC}/maximum-depth-of-binary-tree/`,
-      },
+      { name: "Max Depth of Binary Tree", url: `${LC}/maximum-depth-of-binary-tree/` },
       { name: "Invert Binary Tree", url: `${LC}/invert-binary-tree/` },
       { name: "Validate BST", url: `${LC}/validate-binary-search-tree/` },
-      {
-        name: "Level Order Traversal",
-        url: `${LC}/binary-tree-level-order-traversal/`,
-      },
+      { name: "Level Order Traversal", url: `${LC}/binary-tree-level-order-traversal/` },
       { name: "Same Tree", url: `${LC}/same-tree/` },
     ],
   },
@@ -98,14 +82,8 @@ const CHAPTERS: Chapter[] = [
     path: "/binary-search",
     problems: [
       { name: "Binary Search", url: `${LC}/binary-search/` },
-      {
-        name: "Search Rotated Array",
-        url: `${LC}/search-in-rotated-sorted-array/`,
-      },
-      {
-        name: "First & Last Position",
-        url: `${LC}/find-first-and-last-position-of-element-in-sorted-array/`,
-      },
+      { name: "Search Rotated Array", url: `${LC}/search-in-rotated-sorted-array/` },
+      { name: "First & Last Position", url: `${LC}/find-first-and-last-position-of-element-in-sorted-array/` },
       { name: "Koko Eating Bananas", url: `${LC}/koko-eating-bananas/` },
       { name: "Search 2D Matrix", url: `${LC}/search-a-2d-matrix/` },
     ],
@@ -116,14 +94,8 @@ const CHAPTERS: Chapter[] = [
     path: "/sliding-window",
     problems: [
       { name: "Max Sum Subarray", url: null },
-      {
-        name: "Longest Substring (Repeat)",
-        url: `${LC}/longest-substring-without-repeating-characters/`,
-      },
-      {
-        name: "Minimum Window Substring",
-        url: `${LC}/minimum-window-substring/`,
-      },
+      { name: "Longest Substring (Repeat)", url: `${LC}/longest-substring-without-repeating-characters/` },
+      { name: "Minimum Window Substring", url: `${LC}/minimum-window-substring/` },
       { name: "Permutation in String", url: `${LC}/permutation-in-string/` },
       { name: "Sliding Window Maximum", url: `${LC}/sliding-window-maximum/` },
     ],
@@ -155,7 +127,113 @@ const CHAPTERS: Chapter[] = [
   },
 ];
 
-function SidebarContent({ isActive }: { isActive: (path: string) => boolean }) {
+/**
+ * SUB-COMPONENTS
+ */
+interface NavLinkProps {
+  to?: string;
+  url?: string | null;
+  children: React.ReactNode;
+  active?: boolean;
+  disabled?: boolean;
+}
+
+const NavLink = ({ to, url, children, active, disabled }: NavLinkProps) => {
+  const content = (
+    <Flex
+      align="center"
+      gap="0.5rem"
+      p="0.5rem"
+      borderRadius="0.25rem"
+      transition="all 0.15s"
+      bg={active ? "rgba(201,149,46,0.1)" : "transparent"}
+      opacity={disabled ? 0.35 : 1}
+      _hover={disabled ? {} : { bg: "rgba(232,224,214,0.05)" }}
+      cursor={disabled ? "default" : "pointer"}
+    >
+      <Box
+        w="3px"
+        h="1rem"
+        borderRadius="full"
+        bg={active ? "#c9952e" : "transparent"}
+        flexShrink={0}
+      />
+      {children}
+    </Flex>
+  );
+
+  if (disabled) return content;
+  if (to) return <Link to={to} style={{ textDecoration: "none" }}>{content}</Link>;
+  if (url) return (
+    <ChakraLink href={url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+      {content}
+    </ChakraLink>
+  );
+  return content;
+};
+
+const ProblemItem = ({ problem, index }: { problem: Problem; index: number }) => {
+  const content = (
+    <Flex
+      align="center"
+      gap="0.5rem"
+      p="0.375rem 0.5rem"
+      borderRadius="0.25rem"
+      fontSize="0.75rem"
+      color="#8b8589"
+      transition="all 0.15s"
+      _hover={problem.route || problem.url ? { bg: "rgba(232,224,214,0.05)", color: "#e8e0d6" } : {}}
+    >
+      <Text fontSize="0.55rem" color="#5c5660" minW="14px">
+        {index + 1}.
+      </Text>
+      <Text>{problem.name}</Text>
+    </Flex>
+  );
+
+  if (problem.route) return <Link to={problem.route} style={{ textDecoration: "none" }}>{content}</Link>;
+  if (problem.url) return (
+    <ChakraLink href={problem.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+      {content}
+    </ChakraLink>
+  );
+  return <Box opacity={0.35}>{content}</Box>;
+};
+
+const ChapterGroup = ({ chapter, isActive }: { chapter: Chapter; isActive: (p: string) => boolean }) => {
+  const active = chapter.path ? isActive(chapter.path) : false;
+  const isDisabled = !chapter.path && !chapter.problems;
+
+  return (
+    <Box>
+      <NavLink to={chapter.path} active={active} disabled={isDisabled}>
+        <Text
+          fontSize="0.875rem"
+          color={active ? "#e8e0d6" : "#8b8589"}
+          fontWeight={active ? 600 : 400}
+          fontFamily="'Playfair Display', serif"
+          flex="1"
+        >
+          Ch {chapter.id}: {chapter.name}
+        </Text>
+        {isDisabled && (
+          <Text fontSize="0.6rem" color="#5c5660" letterSpacing="0.1em">
+            Soon
+          </Text>
+        )}
+      </NavLink>
+      {chapter.problems && (
+        <VStack align="stretch" pl="1.5rem" gap="0" mt="0.125rem">
+          {chapter.problems.map((p, i) => (
+            <ProblemItem key={i} problem={p} index={i} />
+          ))}
+        </VStack>
+      )}
+    </Box>
+  );
+};
+
+const SidebarContent = ({ isActive }: { isActive: (path: string) => boolean }) => {
   return (
     <VStack
       bg="#1a1a2e"
@@ -170,219 +248,45 @@ function SidebarContent({ isActive }: { isActive: (path: string) => boolean }) {
         <Heading color="#c9952e" size="md" letterSpacing="0.02em">
           DSA Playbook
         </Heading>
-        <Text
-          fontSize="0.7rem"
-          color="#8b8589"
-          mt="0.25rem"
-          textTransform="uppercase"
-          letterSpacing="0.15em"
-          fontWeight="500"
-        >
+        <Text fontSize="0.7rem" color="#8b8589" mt="0.25rem" textTransform="uppercase" letterSpacing="0.15em" fontWeight="500">
           Interactive Edition
         </Text>
       </Box>
 
       <VStack align="stretch" gap="0.25rem" flex="1">
-        <Text
-          fontSize="0.65rem"
-          color="#5c5660"
-          textTransform="uppercase"
-          letterSpacing="0.15em"
-          fontWeight="500"
-          mb="0.25rem"
-        >
+        <Text fontSize="0.65rem" color="#5c5660" textTransform="uppercase" letterSpacing="0.15em" fontWeight="500" mb="0.25rem">
           Chapters
         </Text>
 
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <Flex
-            align="center"
-            gap="0.5rem"
-            p="0.5rem"
-            borderRadius="0.25rem"
-            transition="all 0.15s"
-            bg={isActive("/") ? "rgba(201,149,46,0.1)" : "transparent"}
-            _hover={{ bg: "rgba(232,224,214,0.05)" }}
-          >
-            <Box
-              w="3px"
-              h="1rem"
-              borderRadius="full"
-              bg={isActive("/") ? "#c9952e" : "transparent"}
-              flexShrink={0}
-            />
-            <Text
-              fontSize="0.8125rem"
-              color={isActive("/") ? "#e8e0d6" : "#8b8589"}
-              fontWeight={isActive("/") ? 500 : 400}
-            >
-              Home
-            </Text>
-          </Flex>
-        </Link>
+        <NavLink to="/" active={isActive("/")}>
+          <Text fontSize="0.8125rem" color={isActive("/") ? "#e8e0d6" : "#8b8589"} fontWeight={isActive("/") ? 500 : 400}>
+            Home
+          </Text>
+        </NavLink>
 
-        <Link to="/interview-workflow" style={{ textDecoration: "none" }}>
-          <Flex
-            align="center"
-            gap="0.5rem"
-            p="0.5rem"
-            borderRadius="0.25rem"
-            transition="all 0.15s"
-            bg={isActive("/interview-workflow") ? "rgba(201,149,46,0.1)" : "transparent"}
-            _hover={{ bg: "rgba(232,224,214,0.05)" }}
-          >
-            <Box
-              w="3px"
-              h="1rem"
-              borderRadius="full"
-              bg={isActive("/interview-workflow") ? "#c9952e" : "transparent"}
-              flexShrink={0}
-            />
-            <Text
-              fontSize="0.8125rem"
-              color={isActive("/interview-workflow") ? "#e8e0d6" : "#8b8589"}
-              fontWeight={isActive("/interview-workflow") ? 500 : 400}
-            >
-              7-Step Workflow
-            </Text>
-          </Flex>
-        </Link>
+        <NavLink to="/interview-workflow" active={isActive("/interview-workflow")}>
+          <Text fontSize="0.8125rem" color={isActive("/interview-workflow") ? "#e8e0d6" : "#8b8589"} fontWeight={isActive("/interview-workflow") ? 500 : 400}>
+            7-Step Workflow
+          </Text>
+        </NavLink>
 
-        {CHAPTERS.map((ch) => {
-          const active = ch.path ? isActive(ch.path) : false;
-          const isDisabled = !ch.path && !ch.problems;
-          const isItemActive = active;
+        {CHAPTERS.map((ch) => (
+          <ChapterGroup key={ch.id} chapter={ch} isActive={isActive} />
+        ))}
 
-          const chapterFlex = (
-            <Flex
-              align="center"
-              gap="0.5rem"
-              p="0.5rem"
-              borderRadius="0.25rem"
-              opacity={isDisabled ? 0.35 : 1}
-              _hover={isDisabled ? {} : { bg: "rgba(232,224,214,0.05)" }}
-            >
-              <Box
-                w="3px"
-                h="1rem"
-                borderRadius="full"
-                bg={isItemActive ? "#c9952e" : "transparent"}
-                flexShrink={0}
-              />
-              <Text
-                fontSize="0.875rem"
-                color={isItemActive ? "#e8e0d6" : "#8b8589"}
-                fontWeight={isItemActive ? 600 : 400}
-                fontFamily="'Playfair Display', serif"
-                flex="1"
-              >
-                Ch {ch.id}: {ch.name}
-              </Text>
-              {isDisabled && (
-                <Text fontSize="0.6rem" color="#5c5660" letterSpacing="0.1em">
-                  Soon
-                </Text>
-              )}
-            </Flex>
-          );
-
-          return (
-            <Box key={ch.id}>
-              {ch.path ? (
-                <Link to={ch.path} style={{ textDecoration: "none" }}>
-                  {chapterFlex}
-                </Link>
-              ) : (
-                chapterFlex
-              )}
-              {ch.problems && (
-                <VStack align="stretch" pl="1.5rem" gap="0" mt="0.125rem">
-                  {ch.problems.map((p, i) => {
-                    const inner = (
-                      <Flex
-                        align="center"
-                        gap="0.5rem"
-                        p="0.375rem 0.5rem"
-                        borderRadius="0.25rem"
-                        fontSize="0.75rem"
-                        color="#8b8589"
-                        transition="all 0.15s"
-                        cursor="pointer"
-                        _hover={{
-                          bg: "rgba(232,224,214,0.05)",
-                          color: "#e8e0d6",
-                        }}
-                      >
-                        <Text fontSize="0.55rem" color="#5c5660" minW="14px">
-                          {i + 1}.
-                        </Text>
-                        <Text>{p.name}</Text>
-                      </Flex>
-                    );
-                    if (p.route)
-                      return (
-                        <Link key={p.route} to={p.route} style={{ textDecoration: "none" }}>
-                          {inner}
-                        </Link>
-                      );
-                    if (p.url)
-                      return (
-                        <Box
-                          key={i}
-                          as="a"
-                          //@ts-ignore
-                          href={p.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ textDecoration: "none" }}
-                        >
-                          {inner}
-                        </Box>
-                      );
-                    return (
-                      <Box key={i} opacity={0.35}>
-                        {inner}
-                      </Box>
-                    );
-                  })}
-                </VStack>
-              )}
-            </Box>
-          );
-        })}
-
-        <Link to="/patterns-mistakes" style={{ textDecoration: "none" }}>
-          <Flex
-            align="center"
-            gap="0.5rem"
-            p="0.5rem"
-            borderRadius="0.25rem"
-            transition="all 0.15s"
-            mt={1}
-            bg={isActive("/patterns-mistakes") ? "rgba(201,149,46,0.1)" : "transparent"}
-            _hover={{ bg: "rgba(232,224,214,0.05)" }}
-          >
-            <Box
-              w="3px"
-              h="1rem"
-              borderRadius="full"
-              bg={isActive("/patterns-mistakes") ? "#c9952e" : "transparent"}
-              flexShrink={0}
-            />
-            <Text
-              fontSize="0.8125rem"
-              color={isActive("/patterns-mistakes") ? "#e8e0d6" : "#8b8589"}
-              fontWeight={isActive("/patterns-mistakes") ? 500 : 400}
-            >
-              Patterns & Mistakes
-            </Text>
-          </Flex>
-        </Link>
+        <NavLink to="/patterns-mistakes" active={isActive("/patterns-mistakes")}>
+          <Text fontSize="0.8125rem" color={isActive("/patterns-mistakes") ? "#e8e0d6" : "#8b8589"} fontWeight={isActive("/patterns-mistakes") ? 500 : 400}>
+            Patterns & Mistakes
+          </Text>
+        </NavLink>
       </VStack>
     </VStack>
   );
-}
+};
 
+/**
+ * MAIN COMPONENT
+ */
 export function MainLayout() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
@@ -390,7 +294,6 @@ export function MainLayout() {
   return (
     <Flex h="100vh" direction="column" bg="#f5f0eb">
       <Flex flex="1" overflow="hidden">
-        {/* Desktop Sidebar */}
         <Box display={{ base: "none", md: "block" }} w="16.25rem" flexShrink={0}>
           <SidebarContent isActive={isActive} />
         </Box>

@@ -11,6 +11,10 @@ import { InterviewGuide } from "@/components/InterviewGuide";
 import { BinarySearchVisualizer } from "@/components/BinarySearchVisualizer";
 import { BacktrackingVisualizer } from "@/components/BacktrackingVisualizer";
 import { ReverseIntegerVisualizer } from "@/components/ReverseIntegerVisualizer";
+import { MinStackVisualizer } from "@/components/MinStackVisualizer";
+import { DailyTemperaturesVisualizer } from "@/components/DailyTemperaturesVisualizer";
+import { EvaluateRPNVisualizer } from "@/components/EvaluateRPNVisualizer";
+import { QueueUsingStacksVisualizer } from "@/components/QueueUsingStacksVisualizer";
 import { PatternsMistakes } from "@/components/PatternsMistakes";
 import { TwoSumHashMap } from "@/components/TwoSumHashMap";
 import { StockProfitVisualizer } from "@/components/StockProfitVisualizer";
@@ -33,7 +37,11 @@ function App() {
           <Route path="arrays-strings" element={<TwoSumVisualizer />} />
           <Route path="prefix-sums" element={<PrefixSumVisualizer />} />
           <Route path="linked-lists" element={<LinkedListVisualizer />} />
-          <Route path="stacks-queues" element={<StackQueueVisualizer />} />
+          <Route path="ch8/valid-parentheses" element={<StackQueueVisualizer />} />
+          <Route path="ch8/min-stack" element={<MinStackVisualizer />} />
+          <Route path="ch8/daily-temperatures" element={<DailyTemperaturesVisualizer />} />
+          <Route path="ch8/evaluate-rpn" element={<EvaluateRPNVisualizer />} />
+          <Route path="ch8/queue-using-stacks" element={<QueueUsingStacksVisualizer />} />
           <Route path="trees" element={<TreeVisualizer />} />
           <Route path="binary-search" element={<BinarySearchVisualizer />} />
           <Route path="backtracking" element={<BacktrackingVisualizer />} />

@@ -50,12 +50,30 @@ export const DrawerCloseTrigger = React.forwardRef<
   )
 })
 
-export const DrawerTrigger = ChakraDrawer.Trigger
-export const DrawerRoot = ChakraDrawer.Root
-export const DrawerFooter = ChakraDrawer.Footer
-export const DrawerHeader = ChakraDrawer.Header
-export const DrawerBody = ChakraDrawer.Body
-export const DrawerBackdrop = ChakraDrawer.Backdrop
-export const DrawerDescription = ChakraDrawer.Description
-export const DrawerTitle = ChakraDrawer.Title
-export const DrawerActionTrigger = ChakraDrawer.ActionTrigger
+export const DrawerTrigger = (props: ChakraDrawer.TriggerProps) => (
+  <ChakraDrawer.Trigger {...props} />
+)
+export const DrawerRoot = (props: ChakraDrawer.RootProps) => (
+  <ChakraDrawer.Root {...props} />
+)
+export const DrawerFooter = (props: ChakraDrawer.FooterProps) => (
+  <ChakraDrawer.Footer {...props} />
+)
+export const DrawerHeader = (props: ChakraDrawer.HeaderProps) => (
+  <ChakraDrawer.Header {...props} />
+)
+export const DrawerBody = (props: ChakraDrawer.BodyProps) => (
+  <ChakraDrawer.Body {...props} />
+)
+export const DrawerBackdrop = (props: ChakraDrawer.BackdropProps) => (
+  <ChakraDrawer.Backdrop {...props} />
+)
+export const DrawerDescription = (props: ChakraDrawer.DescriptionProps) => (
+  <ChakraDrawer.Description {...props} />
+)
+export const DrawerTitle = (props: ChakraDrawer.TitleProps) => (
+  <ChakraDrawer.Title {...props} />
+)
+export const DrawerActionTrigger = (props: ChakraDrawer.ActionTriggerProps) => (
+  <ChakraDrawer.ActionTrigger {...props} />
+)
