@@ -172,7 +172,8 @@ const NavLink = ({ to, url, children, active, disabled }: NavLinkProps) => {
   return content;
 };
 
-const ProblemItem = ({ problem, index }: { problem: Problem; index: number }) => {
+const ProblemItem = ({ problem, index, isActive }: { problem: Problem; index: number; isActive: (p: string) => boolean }) => {
+  const active = problem.route ? isActive(problem.route) : false;
   const content = (
     <Flex
       align="center"
@@ -180,14 +181,15 @@ const ProblemItem = ({ problem, index }: { problem: Problem; index: number }) =>
       p="0.375rem 0.5rem"
       borderRadius="0.25rem"
       fontSize="0.75rem"
-      color="#8b8589"
+      color={active ? "#c9952e" : "#8b8589"}
+      bg={active ? "rgba(201,149,46,0.1)" : "transparent"}
       transition="all 0.15s"
-      _hover={problem.route || problem.url ? { bg: "rgba(232,224,214,0.05)", color: "#e8e0d6" } : {}}
+      _hover={problem.route || problem.url ? { bg: active ? "rgba(201,149,46,0.1)" : "rgba(232,224,214,0.05)", color: active ? "#c9952e" : "#e8e0d6" } : {}}
     >
       <Text fontSize="0.55rem" color="#5c5660" minW="14px">
         {index + 1}.
       </Text>
-      <Text>{problem.name}</Text>
+      <Text fontWeight={active ? 500 : 400}>{problem.name}</Text>
     </Flex>
   );
 
@@ -201,7 +203,8 @@ const ProblemItem = ({ problem, index }: { problem: Problem; index: number }) =>
 };
 
 const ChapterGroup = ({ chapter, isActive }: { chapter: Chapter; isActive: (p: string) => boolean }) => {
-  const active = chapter.path ? isActive(chapter.path) : false;
+  const hasActiveProblem = chapter.problems?.some(p => p.route && isActive(p.route));
+  const active = chapter.path ? isActive(chapter.path) : !!hasActiveProblem;
   const isDisabled = !chapter.path && !chapter.problems;
 
   return (
@@ -225,7 +228,7 @@ const ChapterGroup = ({ chapter, isActive }: { chapter: Chapter; isActive: (p: s
       {chapter.problems && (
         <VStack align="stretch" pl="1.5rem" gap="0" mt="0.125rem">
           {chapter.problems.map((p, i) => (
-            <ProblemItem key={i} problem={p} index={i} />
+            <ProblemItem key={i} problem={p} index={i} isActive={isActive} />
           ))}
         </VStack>
       )}
