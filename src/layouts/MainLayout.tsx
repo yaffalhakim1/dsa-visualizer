@@ -289,7 +289,11 @@ const SidebarContent = ({ isActive }: { isActive: (path: string) => boolean }) =
  */
 export function MainLayout() {
   const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    if (location.pathname === path) return true;
+    const dir = path.substring(0, path.lastIndexOf("/"));
+    return dir.length > 0 && location.pathname.startsWith(dir + "/");
+  };
 
   return (
     <Flex h="100vh" direction="column" bg="#f5f0eb">
