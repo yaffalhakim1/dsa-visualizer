@@ -101,4 +101,4 @@ src/
 
 ## Based On
 
-[DSA Playbook.pdf](./DSA%20Playbook.pdf) — Interview preparation guide covering DSA patterns, coding strategies, behavioral questions, system design basics, and negotiation.
+**DSA Playbook** — Interview preparation guide covering DSA patterns, coding strategies, behavioral questions, system design basics, and negotiation. Each visualizer follows the book's chapter structure and 7-step interview workflow.
