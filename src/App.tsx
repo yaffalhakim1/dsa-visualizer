@@ -20,7 +20,7 @@ import { ContainsDuplicateVisualizer } from "@/components/ContainsDuplicateVisua
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/dsa-visualizer">
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
