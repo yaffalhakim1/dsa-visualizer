@@ -1,41 +1,55 @@
-# DSA Visualizer
+# Project Overview
+**dsa-visualizer** is a React-based single-page application (SPA) designed to provide interactive, step-by-step visualizations for Data Structures and Algorithms (DSA). It is specifically built to transform the concepts in "DSA Playbook.pdf" into a digital, interactive learning platform.
 
-A React application for visualizing data structures and algorithms, built with TypeScript and Vite.
+## Tech Stack
+- **Framework**: React 19 (TypeScript)
+- **Build Tool**: Vite
+- **UI Library**: Chakra UI v3 (Custom system in `src/theme.ts`)
+- **State Management**: Zustand (`src/store/useAlgorithmStore.ts`)
+- **Routing**: React Router DOM v7
+- **Visuals**: Framer Motion (animations), Mafs (mathematical drawings)
+- **Code Display**: `react-syntax-highlighter`
 
-## Project Overview
+# Building and Running
+### Development
+- `npm run dev`: Starts the Vite development server.
+- `npm run chakra:typegen`: Generates types for Chakra UI system (run after theme changes).
 
-- **Core Framework:** React 19 (TypeScript)
-- **Build Tool:** Vite
-- **State Management:** Zustand
-- **Animation & Visuals:** 
-  - Framer Motion (Transitions and animations)
-  - Mafs (Mathematical visualizations)
-  - Lucide React (Icons)
-- **Styling:** Vanilla CSS (Global variables in `src/index.css`)
+### Production
+- `npm run build`: Type-checks and builds the application for production.
+- `npm run preview`: Locally previews the production build.
 
-## Architecture
-
-- `src/main.tsx`: Application entry point.
-- `src/App.tsx`: Root component, currently contains template landing page.
-- `src/assets/`: Static assets including logos and icons.
-- `index.html`: Entry HTML file.
-
-## Key Scripts
-
-- `npm run dev`: Starts the development server.
-- `npm run build`: Compiles TypeScript and builds the production bundle.
+### Maintenance
 - `npm run lint`: Runs ESLint for code quality checks.
-- `npm run preview`: Previews the production build locally.
 
-## Development Conventions
+# Project Structure
+- `src/components/`: Individual visualizers (e.g., `TwoSumVisualizer.tsx`) and shared UI components.
+- `src/layouts/`: Structural components like `MainLayout.tsx` which defines the navigation sidebar.
+- `src/store/`: Zustand stores for global state (e.g., `useAlgorithmStore.ts`).
+- `src/theme.ts`: Chakra UI v3 system configuration and design tokens.
+- `src/App.tsx`: Central routing configuration mapping chapters to visualizer components.
 
-- **State:** Use Zustand for global state management.
-- **Visuals:** Leverage `mafs` for math-heavy visualizations and `framer-motion` for UI animations.
-- **Icons:** Use `lucide-react` for consistent iconography.
-- **Styling:** Follow the existing CSS variable pattern in `index.css` for theme consistency (light/dark mode support).
-- **Types:** Strict TypeScript is enforced via `tsconfig.json`.
+# Development Conventions
+### 1. Algorithm Visualization Pattern
+Most visualizers should sync with the **Global Algorithm Store**.
+- **Playback Control**: Use `useAlgorithmStore` to manage `isPlaying`, `currentStep`, and `totalSteps`.
+- **Active Lines**: Sync the currently executing code line with `activeLines` in the store to highlight it in the UI.
+- **Local State**: Complex visualizations may maintain local animation state but should react to `currentStep` changes from the store.
 
-## Goals
-- [ ] Implement data structure visualizations (e.g., Arrays, Linked Lists, Trees, Graphs).
-- [ ] Implement algorithm walkthroughs (e.g., Sorting, Pathfinding).
-- [ ] Create interactive controls for visualization speed and step-through.
+### 2. Styling and Theme
+- **Chakra UI v3**: Always use the Chakra system for styling. Avoid direct CSS where possible.
+- **Design Tokens**:
+  - **Gold**: `#c9952e` (Primary brand color)
+  - **Dark Navy**: `#1a1a2e` (Sidebar background)
+  - **Cream/Beige**: `#f5f0eb` (Main content background)
+- **Fonts**:
+  - `Playfair Display`: Used for headings and branding.
+  - `DM Sans`: Standard body font.
+  - `JetBrains Mono`: Used for code snippets.
+
+### 3. Navigation
+- Chapters are organized according to the DSA Playbook (e.g., Ch 6: Arrays & Strings).
+- Update `src/layouts/MainLayout.tsx` when adding new chapters or problems to the sidebar.
+
+### 4. Imports
+- Use the `@/` path alias for clean imports from the `src` directory (configured in `vite.config.ts` and `tsconfig.json`).

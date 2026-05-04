@@ -1,164 +1,228 @@
-import { Mafs, Coordinates, Text as MafsText, Polygon, Theme } from "mafs";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Box, Flex, Text, Heading, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text, Heading, VStack, Badge } from "@chakra-ui/react";
 import { SolutionCompare } from "./SolutionCompare";
+import { StepLabel } from "./StepLabel";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 
 const DATA = [1, 2, 3, 4, 5, 6, 7];
 const K = 3;
 
-// Defined steps for the "Step-by-Step" simulation
-const STEPS = DATA.map((_, i) => {
-  if (i > DATA.length - K) return null;
-  return {
-    window: [i, i + K - 1],
-    activeLines: [5, 6, 7, 8],
-    description: `Calculating sum for window [${i}...${i+K-1}]`
-  };
-}).filter(Boolean) as { window: [number, number], activeLines: number[], description: string }[];
+type StepStatus = 'init' | 'sliding' | 'done';
+
+interface WindowStep {
+  window: [number, number];
+  activeLines: number[];
+  status: StepStatus;
+  explanation: string;
+  entering?: number;
+  leaving?: number;
+}
+
+const STATUS_UI_MAP: Record<StepStatus, { color: string, label: string }> = {
+  init: { color: "blue.500", label: "Initial Window" },
+  sliding: { color: "purple.500", label: "Sliding Window" },
+  done: { color: "green.500", label: "Completed" },
+};
+
+const BRUTE_FORCE = `def max_sum(arr, k):
+    res = 0
+    for i in range(len(arr) - k + 1):
+        res = max(res, sum(arr[i : i+k]))
+    return res`;
+
+const OPTIMIZED = `def max_sum(arr, k):
+    curr_sum = sum(arr[:k])
+    res = curr_sum
+    for i in range(k, len(arr)):
+        curr_sum += arr[i] - arr[i-k]
+        res = max(res, curr_sum)
+    return res`;
+
+const generateSteps = (): WindowStep[] => {
+  const steps: WindowStep[] = [];
+  steps.push({
+    window: [0, K - 1],
+    activeLines: [2, 3],
+    status: 'init',
+    explanation: `Initializing first window [0...${K-1}]. Initial Sum = ${DATA.slice(0, K).reduce((a,b)=>a+b,0)}.`
+  });
+  for (let i = K; i < DATA.length; i++) {
+    const start = i - K + 1;
+    const end = i;
+    const leaving = DATA[i - K];
+    const entering = DATA[i];
+    steps.push({
+      window: [start, end],
+      activeLines: [5, 6],
+      status: 'sliding',
+      entering,
+      leaving,
+      explanation: `Slide right: Add entering ${entering}, subtract leaving ${leaving}.`
+    });
+  }
+  steps[steps.length - 1].status = 'done';
+  return steps;
+};
+
+const STEPS = generateSteps();
 
 export function SlidingWindowVisualizer() {
-  const { 
-    currentStep, 
-    setTotalSteps, 
-    isPlaying, 
-    nextStep, 
-    playbackSpeed, 
-    activeLines, 
-    setActiveLines,
-    reset
+  const {
+    currentStep, setTotalSteps, isPlaying, nextStep, playbackSpeed,
+    activeLines, setActiveLines, reset
   } = useAlgorithmStore();
 
-  // Initialize store for this component
+  const currentVisualStep = useMemo(() => STEPS[currentStep] || STEPS[0], [currentStep]);
+  const uiConfig = STATUS_UI_MAP[currentVisualStep.status];
+
   useEffect(() => {
     setTotalSteps(STEPS.length);
-    setActiveLines(STEPS[0].activeLines);
-    return () => reset(); // Cleanup on unmount
-  }, []);
+    return () => reset();
+  }, [setTotalSteps, reset]);
 
-  // Handle auto-playback
   useEffect(() => {
-    let timer: any;
+    setActiveLines(currentVisualStep.activeLines);
+  }, [currentStep, setActiveLines, currentVisualStep.activeLines]);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
     if (isPlaying && currentStep < STEPS.length - 1) {
-      timer = setTimeout(() => {
-        nextStep();
-      }, playbackSpeed);
+      timer = setTimeout(nextStep, playbackSpeed);
     }
     return () => clearTimeout(timer);
   }, [isPlaying, currentStep, nextStep, playbackSpeed]);
 
-  // Sync component state with global store
-  const stepData = STEPS[currentStep];
-  const start = stepData.window[0];
-  const end = stepData.window[1];
-
   const [sum, setSum] = useState(0);
   const [deltaNodes, setDeltaNodes] = useState<{ id: string, val: number, type: 'add' | 'sub' }[]>([]);
-  const prevBounds = useRef({ start, end });
+  const prevBounds = useRef(currentVisualStep.window);
 
-  // Update sum and calculate deltas
   useEffect(() => {
-    const prev = prevBounds.current;
-    if (prev.start === start && prev.end === end) {
-       // Initial load or no change
-       setSum(DATA.slice(start, end + 1).reduce((a, b) => a + b, 0));
-       return;
+    const [start, end] = currentVisualStep.window;
+    const [prevStart, prevEnd] = prevBounds.current;
+    if (start === prevStart && end === prevEnd) {
+      setSum(DATA.slice(start, end + 1).reduce((a, b) => a + b, 0));
+      return;
     }
-
     let newSum = sum;
     const newDeltas: typeof deltaNodes = [];
-
-    // Simple incremental logic for visualization
-    if (end > prev.end) {
+    if (end > prevEnd) {
       newSum += DATA[end];
       newDeltas.push({ id: `add-${end}-${Date.now()}`, val: DATA[end], type: 'add' });
     }
-    if (start > prev.start) {
-      newSum -= DATA[prev.start];
-      newDeltas.push({ id: `sub-${prev.start}-${Date.now()}`, val: DATA[prev.start], type: 'sub' });
+    if (start > prevStart) {
+      newSum -= DATA[prevStart];
+      newDeltas.push({ id: `sub-${prevStart}-${Date.now()}`, val: DATA[prevStart], type: 'sub' });
     }
-
     setSum(newSum);
     setDeltaNodes(newDeltas);
-    setActiveLines(stepData.activeLines);
-    prevBounds.current = { start, end };
-  }, [start, end]);
-
-  const bruteForceCode = `def max_sum(arr, k):
-    res = 0
-    for i in range(len(arr) - k + 1):
-        # Recomputing sum for each window
-        res = max(res, sum(arr[i : i+k]))
-    return res`;
-
-  const optimizedCode = `def max_sum(arr, k):
-    curr_sum = sum(arr[:k]) # 1
-    res = curr_sum          # 2
-    for i in range(k, len(arr)):
-        # Incremental update (O(1))
-        curr_sum += arr[i] - arr[i-k] # 5
-        res = max(res, curr_sum)      # 6
-    return res`;
+    prevBounds.current = [start, end];
+  }, [currentVisualStep]);
 
   return (
     <VStack gap={8} align="stretch" w="full">
-      <Box p={6} borderWidth="1px" borderRadius="xl" bg="white" shadow="md" display="flex" flexDirection="column" alignItems="center" gap={4}>
-        <Heading size="md">Sliding Window (Chapter 14)</Heading>
-        <Text fontSize="sm" color="gray.600">{stepData.description}</Text>
-        
-        <Mafs height={300} width={600} viewBox={{ x: [-1, DATA.length], y: [-1, 1] }}>
-          <Coordinates.Cartesian subdivisions={false} />
-          
-          {DATA.map((val, i) => (
-            <MafsText key={i} x={i} y={0.3} attach="n">{val}</MafsText>
-          ))}
+      <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
+        <Heading size="md" mb={1}>Fixed-Size Sliding Window</Heading>
+        <Text color="#8b8589" mb={6} fontSize="sm">Chapter 14: Two Pointers & Sliding Window</Text>
 
-          <Polygon
-            points={[[start - 0.5, -0.5], [end + 0.5, -0.5], [end + 0.5, 0.5], [start - 0.5, 0.5]]}
-            color={Theme.violet}
-            fillOpacity={0.2}
-          />
+        <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
+          <StepLabel num={1} title="Restate" />
+          <Text fontSize="0.9rem" color="#1a1a2e">Given an array, find the maximum sum of any k consecutive elements. Slide one position at a time and update efficiently.</Text>
+        </Box>
 
-          <MafsText x={start} y={-0.6} attach="s" color={Theme.blue}>Left</MafsText>
-          <MafsText x={end} y={-0.6} attach="s" color={Theme.red}>Right</MafsText>
-        </Mafs>
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={3} bg="#faf6f0" borderRadius="lg">
+            <StepLabel num={2} title="Clarify" />
+            <Text fontSize="0.65rem" color="#8b8589" textTransform="uppercase" letterSpacing="0.1em" fontWeight="600" mb={1}>Edge Cases</Text>
+            <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono">k larger than array? k = 1? k = n?</Text>
+            <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Negative numbers allowed? Empty array?</Text>
+          </Box>
+        </Flex>
 
-        <Flex p={4} bg="gray.50" borderRadius="lg" w="full" maxW="500px" justify="space-between" align="center" border="1px solid" borderColor="gray.100">
-          <Text fontFamily="mono" fontSize="lg">
-            Window: <Box as="span" color="blue.600" fontWeight="bold">[{start}</Box>...<Box as="span" color="red.600" fontWeight="bold">{end}]</Box>
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">For each window position, recompute the sum from scratch by adding all k elements — O(n·k). Simple and correct, but slow.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Keep a running sum. When the window slides, subtract the leaving element and add the entering one — O(1) per step instead of O(k).</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">
+            Consecutive windows share k-1 elements. Recomputation adds the same k-1 values each time. Only 2 elements actually change per step — adding the other k-1 over and over is pure waste.
           </Text>
-          
-          <Flex align="center" gap={3}>
+        </Box>
+
+        <Box pb={4}>
+          <StepLabel num={3} title="Example" mb={3} />
+          <Flex justify="center" align="flex-end" gap={3} position="relative" minH="100px" pt={4}>
+            {DATA.map((val, i) => {
+              const inWindow = i >= currentVisualStep.window[0] && i <= currentVisualStep.window[1];
+              const isLeftEdge = i === currentVisualStep.window[0];
+              const isRightEdge = i === currentVisualStep.window[1];
+              return (
+                <Box key={i} position="relative">
+                  {isLeftEdge && <Text position="absolute" top="-1.5rem" left="50%" transform="translateX(-50%)" color="#c9952e" fontWeight="700" fontSize="0.75rem">L</Text>}
+                  {isRightEdge && <Text position="absolute" top="-1.5rem" left="50%" transform="translateX(-50%)" color="#c9952e" fontWeight="700" fontSize="0.75rem">R</Text>}
+                  <motion.div
+                    animate={{
+                      scale: inWindow ? 1.08 : 0.92,
+                      borderColor: inWindow ? "#c9952e" : "#e0d8d0",
+                      backgroundColor: inWindow ? "#faf6f0" : "#ffffff",
+                      opacity: inWindow ? 1 : 0.4,
+                    }}
+                    transition={{ duration: 0.3 }}
+                    style={{
+                      width: "60px", height: "60px", display: "flex", alignItems: "center", justifyContent: "center",
+                      borderRadius: "10px", border: "2px solid #e0d8d0", fontSize: "1.25rem", fontWeight: 600, color: "#1a1a2e",
+                    }}
+                  >
+                    {val}
+                  </motion.div>
+                </Box>
+              );
+            })}
+          </Flex>
+        </Box>
+
+        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={3}>
+          <Flex justify="space-between" align="center">
+            <Text fontFamily="mono" fontSize="xl" fontWeight="bold" color="#1a1a2e">
+              Window: <Box as="span" color="#c9952e">[{currentVisualStep.window[0]}...{currentVisualStep.window[1]}]</Box>
+            </Text>
+            <Badge bg={uiConfig.color} color="white" px={3} py={1} borderRadius="full" fontSize="0.65rem">{uiConfig.label}</Badge>
+          </Flex>
+          <Flex align="center" gap={3} wrap="wrap">
             <AnimatePresence mode="popLayout">
               {deltaNodes.map((node) => (
-                <motion.div
-                  key={node.id}
+                <motion.div key={node.id}
                   initial={{ opacity: 0, y: -20, scale: 0.5 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 20, scale: 0.5 }}
                   transition={{ duration: 0.4 }}
                 >
-                  <Text color={node.type === 'add' ? 'green.600' : 'red.600'} fontWeight="bold" fontSize="lg">
+                  <Text color={node.type === 'add' ? '#4a9e6b' : '#c94a4a'} fontWeight="bold" fontSize="lg">
                     {node.type === 'add' ? '+' : '-'}{node.val}
                   </Text>
                 </motion.div>
               ))}
             </AnimatePresence>
-            <Text fontFamily="mono" fontSize="2xl" fontWeight="bold" color="purple.600" ml={2}>
-              Sum: {sum}
-            </Text>
+            <Text fontFamily="mono" fontSize="2xl" fontWeight="bold" color="#c9952e" ml={2}>Current Sum: {sum}</Text>
           </Flex>
+          <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>
+            "{currentVisualStep.explanation}"
+          </Text>
         </Flex>
       </Box>
 
       <Box>
-        <Heading size="sm" mb={4}>Mental Model Comparison</Heading>
-        <SolutionCompare 
-          bruteForceCode={bruteForceCode} 
-          optimizedCode={optimizedCode} 
-          activeLines={activeLines}
-        />
+        <StepLabel num={7} title="Implement" mb={2} />
+        <Heading size="sm" mb={4} color="#6b6350">Code</Heading>
+        <SolutionCompare bruteForceCode={BRUTE_FORCE} optimizedCode={OPTIMIZED} activeLines={activeLines} />
       </Box>
     </VStack>
   );

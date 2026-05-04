@@ -11,33 +11,33 @@ interface SolutionCompareProps {
 export function SolutionCompare({ bruteForceCode, optimizedCode, activeLines = [] }: SolutionCompareProps) {
   return (
     <Flex gap={4} mt={6} direction={{ base: "column", lg: "row" }}>
-      <Box flex="1" p={4} bg="red.50" borderRadius="md" border="1px solid" borderColor="red.100">
-        <Text fontWeight="bold" color="red.800" mb={2}>Brute Force</Text>
+      <Box flex="1" p={4} bg="#fdf6f5" borderRadius="md" border="1px solid" borderColor="#f0ddd4">
+        <Text fontWeight="600" color="#8b3a2a" mb={2} fontSize="sm" letterSpacing="0.02em">Brute Force</Text>
         <Box borderRadius="sm" overflow="hidden" fontSize="sm">
-          <SyntaxHighlighter 
-            language="python" 
+          <SyntaxHighlighter
+            language="python"
             style={oneLight}
-            customStyle={{ margin: 0, padding: '12px', background: 'white' }}
+            customStyle={{ margin: 0, padding: "12px", background: "#ffffff" }}
           >
             {bruteForceCode}
           </SyntaxHighlighter>
         </Box>
       </Box>
-      <Box flex="1" p={4} bg="green.50" borderRadius="md" border="1px solid" borderColor="green.100">
-        <Text fontWeight="bold" color="green.800" mb={2}>Optimized (Active Highlight)</Text>
+      <Box flex="1" p={4} bg="#f0faf4" borderRadius="md" border="1px solid" borderColor="#cce0d4">
+        <Text fontWeight="600" color="#2a6b4a" mb={2} fontSize="sm" letterSpacing="0.02em">Optimized</Text>
         <Box borderRadius="sm" overflow="hidden" fontSize="sm">
-          <SyntaxHighlighter 
-            language="python" 
+          <SyntaxHighlighter
+            language="python"
             style={oneLight}
             wrapLines={true}
             lineProps={(lineNumber) => ({
               style: {
                 display: "block",
-                backgroundColor: activeLines.includes(lineNumber) ? "#c6f6d5" : "transparent",
+                backgroundColor: activeLines.includes(lineNumber) ? "#d4e8d4" : "transparent",
                 transition: "background-color 0.2s"
               }
             })}
-            customStyle={{ margin: 0, padding: '12px', background: 'white' }}
+            customStyle={{ margin: 0, padding: "12px", background: "#ffffff" }}
           >
             {optimizedCode}
           </SyntaxHighlighter>

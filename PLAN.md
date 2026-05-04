@@ -26,11 +26,12 @@ The current `SlidingWindowVisualizer.tsx` already references **Chapter 14** from
 
 Our goal is to transform the static PDF into an interactive, step-by-step learning platform.
 
-### Phase 1: Core Visualization Framework (Current)
+### Phase 1: Core Visualization Framework (Completed ✅)
 
 - **Navigation**: Sidebar based on the Playbook's Table of Contents (Chapters 6-20).
 - **Zustand Store**: Centralized state to control "Step-by-Step" execution.
-- **Code Highlighting**: Display the Python template from the book alongside the visualizer, highlighting the active line.
+- **Code Highlighting**: Integrated `react-syntax-highlighter` with active line support.
+- **Global Controls**: Fixed control bar for playback and step-through.
 
 ### Phase 2: DSA Implementation (Sequential)
 
@@ -46,9 +47,7 @@ Our goal is to transform the static PDF into an interactive, step-by-step learni
 - **Complexity Meter**: Real-time Big-O growth visualization as input size changes.
 - **Prep Planner**: Digital version of the "Quick prep plans" (1 week/2 weeks/1 month).
 
-## 4. Immediate Setup (Chakra UI v3)
-
-To ensure a premium feel and rapid UI development:
+## 4. Immediate Setup (Completed ✅)
 
 1. **Install Dependencies**: `@chakra-ui/react`, `@emotion/react`, `vite-tsconfig-paths`.
 2. **Configure Paths**: Setup `tsconfig.json` paths and `vite.config.ts` plugin for clean `@/` imports.
@@ -57,8 +56,10 @@ To ensure a premium feel and rapid UI development:
 
 ## 5. Next Immediate Steps
 
-1. **Refactor `SlidingWindowVisualizer`**: demonstrating the "incremental update" principle.
-2. **Setup Routing & Layout**:
-   - Create a Chakra-based `Sidebar` for chapter navigation.
-   - Implement a `MainLayout` with responsive behavior.
-3. **Template Engine**: A reusable component to render the "Brute Force" vs "Best Solution" comparison from the book.
+1. **Implement Arrays & Strings (Ch 6)**:
+   - Visualizing two-pointer techniques.
+   - Prefix sum visualization.
+2. **Implement Linked Lists (Ch 7)**:
+   - Animated pointer changes (Next/Prev).
+   - Cycle detection (Floyd's) visualization.
+3. **Template Enhancement**: Expand `SolutionCompare` to handle multiple steps/lines more gracefully.
