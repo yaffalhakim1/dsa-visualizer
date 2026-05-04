@@ -1,73 +1,87 @@
-import { Mafs, Coordinates, useMovablePoint, Text as MafsText, Polygon, Theme } from "mafs";
+import { Mafs, Coordinates, Text as MafsText, Polygon, Theme } from "mafs";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Box, Flex, Text, Heading, VStack } from "@chakra-ui/react";
 import { SolutionCompare } from "./SolutionCompare";
+import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 
 const DATA = [1, 2, 3, 4, 5, 6, 7];
+const K = 3;
+
+// Defined steps for the "Step-by-Step" simulation
+const STEPS = DATA.map((_, i) => {
+  if (i > DATA.length - K) return null;
+  return {
+    window: [i, i + K - 1],
+    activeLines: [5, 6, 7, 8],
+    description: `Calculating sum for window [${i}...${i+K-1}]`
+  };
+}).filter(Boolean) as { window: [number, number], activeLines: number[], description: string }[];
 
 export function SlidingWindowVisualizer() {
-  const left = useMovablePoint([0, 0], {
-    constrain: ([x]) => [Math.max(0, Math.min(Math.round(x), right.x)), 0],
-    color: Theme.blue,
-  });
+  const { 
+    currentStep, 
+    setTotalSteps, 
+    isPlaying, 
+    nextStep, 
+    playbackSpeed, 
+    activeLines, 
+    setActiveLines,
+    reset
+  } = useAlgorithmStore();
 
-  const right = useMovablePoint([2, 0], {
-    constrain: ([x]) => [Math.max(left.x, Math.min(Math.round(x), DATA.length - 1)), 0],
-    color: Theme.red,
-  });
+  // Initialize store for this component
+  useEffect(() => {
+    setTotalSteps(STEPS.length);
+    setActiveLines(STEPS[0].activeLines);
+    return () => reset(); // Cleanup on unmount
+  }, []);
 
-  const start = Math.round(left.x);
-  const end = Math.round(right.x);
-  
+  // Handle auto-playback
+  useEffect(() => {
+    let timer: any;
+    if (isPlaying && currentStep < STEPS.length - 1) {
+      timer = setTimeout(() => {
+        nextStep();
+      }, playbackSpeed);
+    }
+    return () => clearTimeout(timer);
+  }, [isPlaying, currentStep, nextStep, playbackSpeed]);
+
+  // Sync component state with global store
+  const stepData = STEPS[currentStep];
+  const start = stepData.window[0];
+  const end = stepData.window[1];
+
   const [sum, setSum] = useState(0);
   const [deltaNodes, setDeltaNodes] = useState<{ id: string, val: number, type: 'add' | 'sub' }[]>([]);
   const prevBounds = useRef({ start, end });
 
-  // Compute initial sum once
-  useEffect(() => {
-    setSum(DATA.slice(start, end + 1).reduce((a, b) => a + b, 0));
-  }, []);
-
-  // Update sum and calculate deltas when bounds change
+  // Update sum and calculate deltas
   useEffect(() => {
     const prev = prevBounds.current;
-    if (prev.start === start && prev.end === end) return;
+    if (prev.start === start && prev.end === end) {
+       // Initial load or no change
+       setSum(DATA.slice(start, end + 1).reduce((a, b) => a + b, 0));
+       return;
+    }
 
     let newSum = sum;
     const newDeltas: typeof deltaNodes = [];
 
-    // Handle right pointer moving right (adding)
+    // Simple incremental logic for visualization
     if (end > prev.end) {
-      for (let i = prev.end + 1; i <= end; i++) {
-        newSum += DATA[i];
-        newDeltas.push({ id: `add-r-${i}-${Date.now()}`, val: DATA[i], type: 'add' });
-      }
+      newSum += DATA[end];
+      newDeltas.push({ id: `add-${end}-${Date.now()}`, val: DATA[end], type: 'add' });
     }
-    // Handle right pointer moving left (subtracting)
-    if (end < prev.end) {
-      for (let i = prev.end; i > end; i--) {
-        newSum -= DATA[i];
-        newDeltas.push({ id: `sub-r-${i}-${Date.now()}`, val: DATA[i], type: 'sub' });
-      }
-    }
-    // Handle left pointer moving right (subtracting)
     if (start > prev.start) {
-      for (let i = prev.start; i < start; i++) {
-        newSum -= DATA[i];
-        newDeltas.push({ id: `sub-l-${i}-${Date.now()}`, val: DATA[i], type: 'sub' });
-      }
-    }
-    // Handle left pointer moving left (adding)
-    if (start < prev.start) {
-      for (let i = prev.start - 1; i >= start; i--) {
-        newSum += DATA[i];
-        newDeltas.push({ id: `add-l-${i}-${Date.now()}`, val: DATA[i], type: 'add' });
-      }
+      newSum -= DATA[prev.start];
+      newDeltas.push({ id: `sub-${prev.start}-${Date.now()}`, val: DATA[prev.start], type: 'sub' });
     }
 
     setSum(newSum);
     setDeltaNodes(newDeltas);
+    setActiveLines(stepData.activeLines);
     prevBounds.current = { start, end };
   }, [start, end]);
 
@@ -79,18 +93,19 @@ export function SlidingWindowVisualizer() {
     return res`;
 
   const optimizedCode = `def max_sum(arr, k):
-    curr_sum = sum(arr[:k])
-    res = curr_sum
+    curr_sum = sum(arr[:k]) # 1
+    res = curr_sum          # 2
     for i in range(k, len(arr)):
         # Incremental update (O(1))
-        curr_sum += arr[i] - arr[i-k]
-        res = max(res, curr_sum)
+        curr_sum += arr[i] - arr[i-k] # 5
+        res = max(res, curr_sum)      # 6
     return res`;
 
   return (
     <VStack gap={8} align="stretch" w="full">
       <Box p={6} borderWidth="1px" borderRadius="xl" bg="white" shadow="md" display="flex" flexDirection="column" alignItems="center" gap={4}>
         <Heading size="md">Sliding Window (Chapter 14)</Heading>
+        <Text fontSize="sm" color="gray.600">{stepData.description}</Text>
         
         <Mafs height={300} width={600} viewBox={{ x: [-1, DATA.length], y: [-1, 1] }}>
           <Coordinates.Cartesian subdivisions={false} />
@@ -104,9 +119,6 @@ export function SlidingWindowVisualizer() {
             color={Theme.violet}
             fillOpacity={0.2}
           />
-
-          {left.element}
-          {right.element}
 
           <MafsText x={start} y={-0.6} attach="s" color={Theme.blue}>Left</MafsText>
           <MafsText x={end} y={-0.6} attach="s" color={Theme.red}>Right</MafsText>
@@ -138,15 +150,15 @@ export function SlidingWindowVisualizer() {
             </Text>
           </Flex>
         </Flex>
-        
-        <Text fontSize="sm" color="gray.500" fontStyle="italic">
-          Drag handles to see O(1) incremental update animation.
-        </Text>
       </Box>
 
       <Box>
         <Heading size="sm" mb={4}>Mental Model Comparison</Heading>
-        <SolutionCompare bruteForceCode={bruteForceCode} optimizedCode={optimizedCode} />
+        <SolutionCompare 
+          bruteForceCode={bruteForceCode} 
+          optimizedCode={optimizedCode} 
+          activeLines={activeLines}
+        />
       </Box>
     </VStack>
   );
