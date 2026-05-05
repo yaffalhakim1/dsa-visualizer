@@ -1,40 +1,43 @@
+import { lazy, Suspense } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { Flex, Spinner } from "@chakra-ui/react";
 import { MainLayout } from "@/layouts/MainLayout";
 import { HomePage } from "@/components/HomePage";
-import { SlidingWindowVisualizer } from "@/components/SlidingWindowVisualizer";
-import { TwoSumVisualizer } from "@/components/TwoSumVisualizer";
-import { PrefixSumVisualizer } from "@/components/PrefixSumVisualizer";
-import { LinkedListVisualizer } from "@/components/LinkedListVisualizer";
-import { StackQueueVisualizer } from "@/components/StackQueueVisualizer";
-import { TreeVisualizer } from "@/components/TreeVisualizer";
 import { InterviewGuide } from "@/components/InterviewGuide";
-import { BinarySearchVisualizer } from "@/components/BinarySearchVisualizer";
-import { BacktrackingVisualizer } from "@/components/BacktrackingVisualizer";
-import { ReverseIntegerVisualizer } from "@/components/ReverseIntegerVisualizer";
-import { MinStackVisualizer } from "@/components/MinStackVisualizer";
-import { DailyTemperaturesVisualizer } from "@/components/DailyTemperaturesVisualizer";
-import { EvaluateRPNVisualizer } from "@/components/EvaluateRPNVisualizer";
-import { QueueUsingStacksVisualizer } from "@/components/QueueUsingStacksVisualizer";
 import { PatternsMistakes } from "@/components/PatternsMistakes";
-import { TwoSumHashMap } from "@/components/TwoSumHashMap";
-import { StockProfitVisualizer } from "@/components/StockProfitVisualizer";
-import { ProductExceptSelfVisualizer } from "@/components/ProductExceptSelfVisualizer";
-import { MaximumSubarrayVisualizer } from "@/components/MaximumSubarrayVisualizer";
-import { ContainsDuplicateVisualizer } from "@/components/ContainsDuplicateVisualizer";
-import { NextPermutationVisualizer } from "@/components/NextPermutationVisualizer";
-import { SearchRotatedArrayVisualizer } from "@/components/SearchRotatedArrayVisualizer";
-import { FirstLastPositionVisualizer } from "@/components/FirstLastPositionVisualizer";
-import { KokoEatingBananasVisualizer } from "@/components/KokoEatingBananasVisualizer";
-import { Search2DMatrixVisualizer } from "@/components/Search2DMatrixVisualizer";
-import { ArraysStringsConcept } from "@/components/ArraysStringsConcept";
-import { StacksQueuesConcept } from "@/components/StacksQueuesConcept";
-import { BinarySearchConcept } from "@/components/BinarySearchConcept";
-import { LinkedListsConcept } from "@/components/LinkedListsConcept";
-import { TreesConcept } from "@/components/TreesConcept";
-import { SlidingWindowConcept } from "@/components/SlidingWindowConcept";
-import { BacktrackingConcept } from "@/components/BacktrackingConcept";
-import { DPConcept } from "@/components/DPConcept";
-import { MathConcept } from "@/components/MathConcept";
+
+const SlidingWindowVisualizer = lazy(() => import("@/components/SlidingWindowVisualizer").then(m => ({ default: m.SlidingWindowVisualizer })));
+const TwoSumVisualizer = lazy(() => import("@/components/TwoSumVisualizer").then(m => ({ default: m.TwoSumVisualizer })));
+const PrefixSumVisualizer = lazy(() => import("@/components/PrefixSumVisualizer").then(m => ({ default: m.PrefixSumVisualizer })));
+const LinkedListVisualizer = lazy(() => import("@/components/LinkedListVisualizer").then(m => ({ default: m.LinkedListVisualizer })));
+const StackQueueVisualizer = lazy(() => import("@/components/StackQueueVisualizer").then(m => ({ default: m.StackQueueVisualizer })));
+const TreeVisualizer = lazy(() => import("@/components/TreeVisualizer").then(m => ({ default: m.TreeVisualizer })));
+const BinarySearchVisualizer = lazy(() => import("@/components/BinarySearchVisualizer").then(m => ({ default: m.BinarySearchVisualizer })));
+const BacktrackingVisualizer = lazy(() => import("@/components/BacktrackingVisualizer").then(m => ({ default: m.BacktrackingVisualizer })));
+const ReverseIntegerVisualizer = lazy(() => import("@/components/ReverseIntegerVisualizer").then(m => ({ default: m.ReverseIntegerVisualizer })));
+const MinStackVisualizer = lazy(() => import("@/components/MinStackVisualizer").then(m => ({ default: m.MinStackVisualizer })));
+const DailyTemperaturesVisualizer = lazy(() => import("@/components/DailyTemperaturesVisualizer").then(m => ({ default: m.DailyTemperaturesVisualizer })));
+const EvaluateRPNVisualizer = lazy(() => import("@/components/EvaluateRPNVisualizer").then(m => ({ default: m.EvaluateRPNVisualizer })));
+const QueueUsingStacksVisualizer = lazy(() => import("@/components/QueueUsingStacksVisualizer").then(m => ({ default: m.QueueUsingStacksVisualizer })));
+const TwoSumHashMap = lazy(() => import("@/components/TwoSumHashMap").then(m => ({ default: m.TwoSumHashMap })));
+const StockProfitVisualizer = lazy(() => import("@/components/StockProfitVisualizer").then(m => ({ default: m.StockProfitVisualizer })));
+const ProductExceptSelfVisualizer = lazy(() => import("@/components/ProductExceptSelfVisualizer").then(m => ({ default: m.ProductExceptSelfVisualizer })));
+const MaximumSubarrayVisualizer = lazy(() => import("@/components/MaximumSubarrayVisualizer").then(m => ({ default: m.MaximumSubarrayVisualizer })));
+const ContainsDuplicateVisualizer = lazy(() => import("@/components/ContainsDuplicateVisualizer").then(m => ({ default: m.ContainsDuplicateVisualizer })));
+const NextPermutationVisualizer = lazy(() => import("@/components/NextPermutationVisualizer").then(m => ({ default: m.NextPermutationVisualizer })));
+const SearchRotatedArrayVisualizer = lazy(() => import("@/components/SearchRotatedArrayVisualizer").then(m => ({ default: m.SearchRotatedArrayVisualizer })));
+const FirstLastPositionVisualizer = lazy(() => import("@/components/FirstLastPositionVisualizer").then(m => ({ default: m.FirstLastPositionVisualizer })));
+const KokoEatingBananasVisualizer = lazy(() => import("@/components/KokoEatingBananasVisualizer").then(m => ({ default: m.KokoEatingBananasVisualizer })));
+const Search2DMatrixVisualizer = lazy(() => import("@/components/Search2DMatrixVisualizer").then(m => ({ default: m.Search2DMatrixVisualizer })));
+const ArraysStringsConcept = lazy(() => import("@/components/ArraysStringsConcept").then(m => ({ default: m.ArraysStringsConcept })));
+const StacksQueuesConcept = lazy(() => import("@/components/StacksQueuesConcept").then(m => ({ default: m.StacksQueuesConcept })));
+const BinarySearchConcept = lazy(() => import("@/components/BinarySearchConcept").then(m => ({ default: m.BinarySearchConcept })));
+const LinkedListsConcept = lazy(() => import("@/components/LinkedListsConcept").then(m => ({ default: m.LinkedListsConcept })));
+const TreesConcept = lazy(() => import("@/components/TreesConcept").then(m => ({ default: m.TreesConcept })));
+const SlidingWindowConcept = lazy(() => import("@/components/SlidingWindowConcept").then(m => ({ default: m.SlidingWindowConcept })));
+const BacktrackingConcept = lazy(() => import("@/components/BacktrackingConcept").then(m => ({ default: m.BacktrackingConcept })));
+const DPConcept = lazy(() => import("@/components/DPConcept").then(m => ({ default: m.DPConcept })));
+const MathConcept = lazy(() => import("@/components/MathConcept").then(m => ({ default: m.MathConcept })));
 
 function App() {
   return (
@@ -42,43 +45,115 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="ch6/two-sum" element={<TwoSumHashMap />} />
-          <Route path="ch6/concept" element={<ArraysStringsConcept />} />
-          <Route path="ch6/best-time" element={<StockProfitVisualizer />} />
-          <Route path="ch6/product-except-self" element={<ProductExceptSelfVisualizer />} />
-          <Route path="ch6/maximum-subarray" element={<MaximumSubarrayVisualizer />} />
-          <Route path="ch6/contains-duplicate" element={<ContainsDuplicateVisualizer />} />
-          <Route path="ch6/next-permutation" element={<NextPermutationVisualizer />} />
-          <Route path="ch7/concept" element={<LinkedListsConcept />} />
-          <Route path="ch10/concept" element={<TreesConcept />} />
-          <Route path="ch14/concept" element={<SlidingWindowConcept />} />
-          <Route path="ch15/concept" element={<BacktrackingConcept />} />
-          <Route path="ch17/concept" element={<DPConcept />} />
-          <Route path="ch20/concept" element={<MathConcept />} />
-          <Route path="sliding-window" element={<SlidingWindowVisualizer />} />
-          <Route path="arrays-strings" element={<TwoSumVisualizer />} />
-          <Route path="prefix-sums" element={<PrefixSumVisualizer />} />
-          <Route path="linked-lists" element={<LinkedListVisualizer />} />
-          <Route path="ch8/valid-parentheses" element={<StackQueueVisualizer />} />
-          <Route path="ch8/concept" element={<StacksQueuesConcept />} />
-          <Route path="ch8/min-stack" element={<MinStackVisualizer />} />
-          <Route path="ch8/daily-temperatures" element={<DailyTemperaturesVisualizer />} />
-          <Route path="ch8/evaluate-rpn" element={<EvaluateRPNVisualizer />} />
-          <Route path="ch8/queue-using-stacks" element={<QueueUsingStacksVisualizer />} />
-          <Route path="trees" element={<TreeVisualizer />} />
-          <Route path="ch13/concept" element={<BinarySearchConcept />} />
-          <Route path="binary-search" element={<BinarySearchVisualizer />} />
-          <Route path="ch13/search-rotated" element={<SearchRotatedArrayVisualizer />} />
-          <Route path="ch13/first-last-position" element={<FirstLastPositionVisualizer />} />
-          <Route path="ch13/koko-eating-bananas" element={<KokoEatingBananasVisualizer />} />
-          <Route path="ch13/search-2d-matrix" element={<Search2DMatrixVisualizer />} />
-          <Route path="backtracking" element={<BacktrackingVisualizer />} />
-          <Route path="reverse-integer" element={<ReverseIntegerVisualizer />} />
+          <Route path="ch6/two-sum" element={
+            <Suspense fallback={<PageLoader />}><TwoSumHashMap /></Suspense>
+          } />
+          <Route path="ch6/concept" element={
+            <Suspense fallback={<PageLoader />}><ArraysStringsConcept /></Suspense>
+          } />
+          <Route path="ch6/best-time" element={
+            <Suspense fallback={<PageLoader />}><StockProfitVisualizer /></Suspense>
+          } />
+          <Route path="ch6/product-except-self" element={
+            <Suspense fallback={<PageLoader />}><ProductExceptSelfVisualizer /></Suspense>
+          } />
+          <Route path="ch6/maximum-subarray" element={
+            <Suspense fallback={<PageLoader />}><MaximumSubarrayVisualizer /></Suspense>
+          } />
+          <Route path="ch6/contains-duplicate" element={
+            <Suspense fallback={<PageLoader />}><ContainsDuplicateVisualizer /></Suspense>
+          } />
+          <Route path="ch6/next-permutation" element={
+            <Suspense fallback={<PageLoader />}><NextPermutationVisualizer /></Suspense>
+          } />
+          <Route path="ch7/concept" element={
+            <Suspense fallback={<PageLoader />}><LinkedListsConcept /></Suspense>
+          } />
+          <Route path="ch10/concept" element={
+            <Suspense fallback={<PageLoader />}><TreesConcept /></Suspense>
+          } />
+          <Route path="ch14/concept" element={
+            <Suspense fallback={<PageLoader />}><SlidingWindowConcept /></Suspense>
+          } />
+          <Route path="ch15/concept" element={
+            <Suspense fallback={<PageLoader />}><BacktrackingConcept /></Suspense>
+          } />
+          <Route path="ch17/concept" element={
+            <Suspense fallback={<PageLoader />}><DPConcept /></Suspense>
+          } />
+          <Route path="ch20/concept" element={
+            <Suspense fallback={<PageLoader />}><MathConcept /></Suspense>
+          } />
+          <Route path="sliding-window" element={
+            <Suspense fallback={<PageLoader />}><SlidingWindowVisualizer /></Suspense>
+          } />
+          <Route path="arrays-strings" element={
+            <Suspense fallback={<PageLoader />}><TwoSumVisualizer /></Suspense>
+          } />
+          <Route path="prefix-sums" element={
+            <Suspense fallback={<PageLoader />}><PrefixSumVisualizer /></Suspense>
+          } />
+          <Route path="linked-lists" element={
+            <Suspense fallback={<PageLoader />}><LinkedListVisualizer /></Suspense>
+          } />
+          <Route path="ch8/valid-parentheses" element={
+            <Suspense fallback={<PageLoader />}><StackQueueVisualizer /></Suspense>
+          } />
+          <Route path="ch8/concept" element={
+            <Suspense fallback={<PageLoader />}><StacksQueuesConcept /></Suspense>
+          } />
+          <Route path="ch8/min-stack" element={
+            <Suspense fallback={<PageLoader />}><MinStackVisualizer /></Suspense>
+          } />
+          <Route path="ch8/daily-temperatures" element={
+            <Suspense fallback={<PageLoader />}><DailyTemperaturesVisualizer /></Suspense>
+          } />
+          <Route path="ch8/evaluate-rpn" element={
+            <Suspense fallback={<PageLoader />}><EvaluateRPNVisualizer /></Suspense>
+          } />
+          <Route path="ch8/queue-using-stacks" element={
+            <Suspense fallback={<PageLoader />}><QueueUsingStacksVisualizer /></Suspense>
+          } />
+          <Route path="trees" element={
+            <Suspense fallback={<PageLoader />}><TreeVisualizer /></Suspense>
+          } />
+          <Route path="ch13/concept" element={
+            <Suspense fallback={<PageLoader />}><BinarySearchConcept /></Suspense>
+          } />
+          <Route path="binary-search" element={
+            <Suspense fallback={<PageLoader />}><BinarySearchVisualizer /></Suspense>
+          } />
+          <Route path="ch13/search-rotated" element={
+            <Suspense fallback={<PageLoader />}><SearchRotatedArrayVisualizer /></Suspense>
+          } />
+          <Route path="ch13/first-last-position" element={
+            <Suspense fallback={<PageLoader />}><FirstLastPositionVisualizer /></Suspense>
+          } />
+          <Route path="ch13/koko-eating-bananas" element={
+            <Suspense fallback={<PageLoader />}><KokoEatingBananasVisualizer /></Suspense>
+          } />
+          <Route path="ch13/search-2d-matrix" element={
+            <Suspense fallback={<PageLoader />}><Search2DMatrixVisualizer /></Suspense>
+          } />
+          <Route path="backtracking" element={
+            <Suspense fallback={<PageLoader />}><BacktrackingVisualizer /></Suspense>
+          } />
+          <Route path="reverse-integer" element={
+            <Suspense fallback={<PageLoader />}><ReverseIntegerVisualizer /></Suspense>
+          } />
           <Route path="patterns-mistakes" element={<PatternsMistakes />} />
           <Route path="interview-workflow" element={<InterviewGuide />} />
         </Route>
       </Routes>
     </HashRouter>
+  );
+}
+
+function PageLoader() {
+  return (
+    <Flex justify="center" align="center" minH="calc(100vh - 64px)" bg="#f5f0eb">
+      <Spinner color="#c9952e" size="xl" borderWidth="3px" />
+    </Flex>
   );
 }
 
