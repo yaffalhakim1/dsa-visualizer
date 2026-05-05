@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { ChapterPrimer } from "./ChapterPrimer";
+import { SweepTrace } from "./SweepTrace";
 
 /**
  * CONSTANTS & CONFIGURATION
@@ -66,6 +67,25 @@ const UI_CONFIG = {
     scanning: { label: "Scanning", bg: "purple.500" }
   }
 };
+
+const TRACE_STEPS = [
+  { label: "Index 0 (-2):", text: "runningSum = -2. maxSum = -2." },
+  { label: "Index 1 (1):", text: "Is 1 > (-2 + 1)? Yes. Start fresh. runningSum = 1. maxSum = 1." },
+  { label: "Index 2 (-3):", text: "Is -3 > (1 - 3)? No. Keep streak. runningSum = -2. maxSum = 1." },
+  { label: "Index 3 (4):", text: "Is 4 > (-2 + 4)? Yes. Start fresh. runningSum = 4. maxSum = 4." },
+  { label: "Index 4 (-1):", text: "Is -1 > (4 - 1)? No. Keep streak. runningSum = 3. maxSum = 4." },
+  { label: "Index 5 (2):", text: "Is 2 > (3 + 2)? No. Keep streak. runningSum = 5. maxSum = 5." },
+];
+
+const TRACE_CODE = `function maxSubArray(nums) {
+    let runningSum = nums[0];
+    let maxSum = nums[0];
+    for (let i = 1; i < nums.length; i++) {
+        runningSum = Math.max(nums[i], runningSum + nums[i]);
+        maxSum = Math.max(maxSum, runningSum);
+    }
+    return maxSum;
+}`;
 
 /**
  * TYPES
@@ -295,6 +315,12 @@ export function MaximumSubarrayVisualizer() {
           </Flex>
         </Box>
       </Box>
+
+      <SweepTrace
+        traceTitle="The Trace (Example: nums = [-2, 1, -3, 4, -1, 2])"
+        steps={TRACE_STEPS}
+        code={TRACE_CODE}
+      />
 
       <Box>
         <StepLabel num={7} title="Implement" mb={2} />

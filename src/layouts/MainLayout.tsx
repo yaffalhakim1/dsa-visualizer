@@ -39,6 +39,7 @@ const CHAPTERS: Chapter[] = [
       { name: "Product of Array Except Self", route: "/ch6/product-except-self" },
       { name: "Maximum Subarray (Kadane's)", route: "/ch6/maximum-subarray" },
       { name: "Contains Duplicate", route: "/ch6/contains-duplicate" },
+      { name: "Next Permutation", route: "/ch6/next-permutation" },
     ],
   },
   {

@@ -21,6 +21,7 @@ import { StockProfitVisualizer } from "@/components/StockProfitVisualizer";
 import { ProductExceptSelfVisualizer } from "@/components/ProductExceptSelfVisualizer";
 import { MaximumSubarrayVisualizer } from "@/components/MaximumSubarrayVisualizer";
 import { ContainsDuplicateVisualizer } from "@/components/ContainsDuplicateVisualizer";
+import { NextPermutationVisualizer } from "@/components/NextPermutationVisualizer";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="ch6/product-except-self" element={<ProductExceptSelfVisualizer />} />
           <Route path="ch6/maximum-subarray" element={<MaximumSubarrayVisualizer />} />
           <Route path="ch6/contains-duplicate" element={<ContainsDuplicateVisualizer />} />
+          <Route path="ch6/next-permutation" element={<NextPermutationVisualizer />} />
           <Route path="sliding-window" element={<SlidingWindowVisualizer />} />
           <Route path="arrays-strings" element={<TwoSumVisualizer />} />
           <Route path="prefix-sums" element={<PrefixSumVisualizer />} />

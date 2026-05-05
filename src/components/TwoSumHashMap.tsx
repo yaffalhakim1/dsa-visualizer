@@ -5,9 +5,29 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { ChapterPrimer } from "./ChapterPrimer";
+import { SweepTrace } from "./SweepTrace";
 
 const DATA = [2, 7, 11, 15];
 const TARGET = 9;
+
+const TRACE_STEPS = [
+  { label: "Index 0 (Value 2):", text: "We need 9 - 2 = 7. Is 7 in our map? No.", isAction: true },
+  { label: "", text: "Store {2: 0} in the map.", isAction: true },
+  { label: "Index 1 (Value 7):", text: "We need 9 - 7 = 2. Is 2 in our map? Yes!", isAction: false },
+  { label: "", text: "Found the pair. Return the index of 2 (from the map) and our current index.", isAction: true },
+  { label: "Result:", text: "[0, 1]", isAction: false },
+];
+
+const TRACE_CODE = `function twoSum(nums, target) {
+    const seen = {};
+    for (let i = 0; i < nums.length; i++) {
+        const need = target - nums[i];
+        if (need in seen)
+            return [seen[need], i];
+        seen[nums[i]] = i;
+    }
+    return [];
+}`;
 
 interface TSUStep {
   idx: number;
@@ -152,6 +172,13 @@ export function TwoSumHashMap() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
       </Box>
+
+      <SweepTrace
+        traceTitle="The Trace (Example: nums = [2, 7, 11, 15], target = 9)"
+        steps={TRACE_STEPS}
+        code={TRACE_CODE}
+      />
+
       <Box>
         <StepLabel num={7} title="Implement" mb={2} />
         <Heading size="sm" mb={4} color="#6b6350">JS Code</Heading>

@@ -5,8 +5,29 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { ChapterPrimer } from "./ChapterPrimer";
+import { SweepTrace } from "./SweepTrace";
 
 const DATA = [7, 1, 5, 3, 6, 4];
+
+const TRACE_STEPS = [
+  { label: "Day 0 (Price 7):", text: "minPrice is 7. Profit is 0." },
+  { label: "Day 1 (Price 1):", text: "minPrice drops to 1. Profit is 0." },
+  { label: "Day 2 (Price 5):", text: "minPrice is 1. If we sell today: $5 - 1 = 4$. bestProfit = 4." },
+  { label: "Day 3 (Price 3):", text: "minPrice is 1. If we sell today: $3 - 1 = 2$. bestProfit stays 4." },
+  { label: "Day 4 (Price 6):", text: "minPrice is 1. If we sell today: $6 - 1 = 5$. bestProfit = 5." },
+  { label: "Day 5 (Price 4):", text: "minPrice is 1. If we sell today: $4 - 1 = 3$. bestProfit stays 5." },
+  { label: "Final Answer:", text: "5", isAction: true },
+];
+
+const TRACE_CODE = `function maxProfit(prices) {
+    let minPrice = Infinity;
+    let best = 0;
+    for (let i = 0; i < prices.length; i++) {
+        minPrice = Math.min(minPrice, prices[i]);
+        best = Math.max(best, prices[i] - minPrice);
+    }
+    return best;
+}`;
 
 interface StockStep {
   idx: number;
@@ -144,6 +165,13 @@ export function StockProfitVisualizer() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
       </Box>
+
+      <SweepTrace
+        traceTitle="The Trace (Example: prices = [7, 1, 5, 3, 6, 4])"
+        steps={TRACE_STEPS}
+        code={TRACE_CODE}
+      />
+
       <Box>
         <StepLabel num={7} title="Implement" mb={2} />
         <Heading size="sm" mb={4} color="#6b6350">JS Code</Heading>

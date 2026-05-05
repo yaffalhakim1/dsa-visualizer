@@ -5,8 +5,40 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { ChapterPrimer } from "./ChapterPrimer";
+import { SweepTrace } from "./SweepTrace";
 
 const DATA = [1, 2, 3, 4];
+
+const TRACE_STEPS = [
+  { label: "Pass 1: The Left Side (Prefix)", text: "", isAction: false },
+  { label: "Index 0:", text: "Prefix is 1. (New prefix: 1 x 1 = 1)" },
+  { label: "Index 1:", text: "Prefix is 1. (New prefix: 1 x 2 = 2)" },
+  { label: "Index 2:", text: "Prefix is 2. (New prefix: 2 x 3 = 6)" },
+  { label: "Index 3:", text: "Prefix is 6. (New prefix: 6 x 4 = 24)" },
+  { label: "Result so far:", text: "[1, 1, 2, 6]", isAction: true },
+  { label: "Pass 2: The Right Side (Suffix)", text: "", isAction: false },
+  { label: "Index 3:", text: "result[3] (6) x suffix (1) = 6. (New suffix: 1 x 4 = 4)" },
+  { label: "Index 2:", text: "result[2] (2) x suffix (4) = 8. (New suffix: 4 x 3 = 12)" },
+  { label: "Index 1:", text: "result[1] (1) x suffix (12) = 12. (New suffix: 12 x 2 = 24)" },
+  { label: "Index 0:", text: "result[0] (1) x suffix (24) = 24." },
+  { label: "Final Answer:", text: "[24, 12, 8, 6]", isAction: true },
+];
+
+const TRACE_CODE = `function productExceptSelf(nums) {
+    const n = nums.length;
+    const result = new Array(n).fill(1);
+    let prefix = 1;
+    for (let i = 0; i < n; i++) {
+        result[i] = prefix;
+        prefix *= nums[i];
+    }
+    let suffix = 1;
+    for (let i = n - 1; i >= 0; i--) {
+        result[i] *= suffix;
+        suffix *= nums[i];
+    }
+    return result;
+}`;
 
 interface PESStep {
   prefixIdx: number;
@@ -150,6 +182,13 @@ export function ProductExceptSelfVisualizer() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
       </Box>
+
+      <SweepTrace
+        traceTitle="The Trace (Example: nums = [1, 2, 3, 4])"
+        steps={TRACE_STEPS}
+        code={TRACE_CODE}
+      />
+
       <Box>
         <StepLabel num={7} title="Implement" mb={2} />
         <Heading size="sm" mb={4} color="#6b6350">JS Code</Heading>
