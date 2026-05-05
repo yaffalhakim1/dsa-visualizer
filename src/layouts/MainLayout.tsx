@@ -202,9 +202,10 @@ const ProblemItem = ({ problem, index, isActive }: { problem: Problem; index: nu
   return <Box opacity={0.35}>{content}</Box>;
 };
 
-const ChapterGroup = ({ chapter, isActive }: { chapter: Chapter; isActive: (p: string) => boolean }) => {
+const ChapterGroup = ({ chapter, isActive, pathname }: { chapter: Chapter; isActive: (p: string) => boolean; pathname: string }) => {
   const hasActiveProblem = chapter.problems?.some(p => p.route && isActive(p.route));
-  const active = chapter.path ? isActive(chapter.path) : !!hasActiveProblem;
+  const prefixMatch = chapter.path && pathname.startsWith(chapter.path.replace(/\/[^/]+$/, "") + "/");
+  const active = chapter.path ? isActive(chapter.path) || prefixMatch : !!hasActiveProblem;
   const isDisabled = !chapter.path && !chapter.problems;
 
   return (
@@ -236,7 +237,7 @@ const ChapterGroup = ({ chapter, isActive }: { chapter: Chapter; isActive: (p: s
   );
 };
 
-const SidebarContent = ({ isActive }: { isActive: (path: string) => boolean }) => {
+const SidebarContent = ({ isActive, pathname }: { isActive: (path: string) => boolean; pathname: string }) => {
   return (
     <VStack
       bg="#1a1a2e"
@@ -274,7 +275,7 @@ const SidebarContent = ({ isActive }: { isActive: (path: string) => boolean }) =
         </NavLink>
 
         {CHAPTERS.map((ch) => (
-          <ChapterGroup key={ch.id} chapter={ch} isActive={isActive} />
+          <ChapterGroup key={ch.id} chapter={ch} isActive={isActive} pathname={pathname} />
         ))}
 
         <NavLink to="/patterns-mistakes" active={isActive("/patterns-mistakes")}>
@@ -292,17 +293,13 @@ const SidebarContent = ({ isActive }: { isActive: (path: string) => boolean }) =
  */
 export function MainLayout() {
   const location = useLocation();
-  const isActive = (path: string) => {
-    if (location.pathname === path) return true;
-    const dir = path.substring(0, path.lastIndexOf("/"));
-    return dir.length > 0 && location.pathname.startsWith(dir + "/");
-  };
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <Flex h="100vh" direction="column" bg="#f5f0eb">
       <Flex flex="1" overflow="hidden">
         <Box display={{ base: "none", md: "block" }} w="16.25rem" flexShrink={0}>
-          <SidebarContent isActive={isActive} />
+                  <SidebarContent isActive={isActive} pathname={location.pathname} />
         </Box>
 
         {/* Mobile Header */}
@@ -332,7 +329,7 @@ export function MainLayout() {
               <DrawerContent bg="#1a1a2e" p={0}>
                 <DrawerCloseTrigger color="white" top={4} right={4} />
                 <DrawerBody p={0}>
-                  <SidebarContent isActive={isActive} />
+          <SidebarContent isActive={isActive} pathname={location.pathname} />
                 </DrawerBody>
               </DrawerContent>
             </DrawerRoot>
