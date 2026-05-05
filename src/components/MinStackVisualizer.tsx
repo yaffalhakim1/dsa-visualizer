@@ -4,6 +4,7 @@ import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { SweepTrace } from "./SweepTrace";
 
 const OPS = [
   { op: "push", val: -2 },
@@ -14,6 +15,36 @@ const OPS = [
   { op: "top", val: undefined },
   { op: "getMin", val: undefined },
 ];
+
+const TRACE_STEPS = [
+  { label: "push(-2):", text: "Main push -2. minStack is empty → also push -2. Main: [-2], Min: [-2]" },
+  { label: "push(0):", text: "Main push 0. 0 > minStack top (-2) → minStack stays. Main: [-2, 0], Min: [-2]" },
+  { label: "push(-3):", text: "Main push -3. -3 <= minStack top (-2) → also push -3. Main: [-2, 0, -3], Min: [-2, -3]" },
+  { label: "getMin():", text: "Top of minStack is -3. Return -3. O(1)!", isAction: true },
+  { label: "pop():", text: "Pop top of main (-3). -3 equals minStack top (-3) → pop minStack too. Main: [-2, 0], Min: [-2]" },
+  { label: "top():", text: "Top of main stack is 0. Return 0. O(1)." },
+  { label: "getMin():", text: "Top of minStack is -2. Return -2. O(1)!", isAction: true },
+];
+
+const TRACE_CODE = `class MinStack {
+    constructor() {
+        this.stack = [];
+        this.minStack = [];
+    }
+    push(x) {
+        this.stack.push(x);
+        if (!this.minStack.length ||
+            x <= this.minStack.at(-1))
+            this.minStack.push(x);
+    }
+    pop() {
+        if (this.stack.pop() ===
+            this.minStack.at(-1))
+            this.minStack.pop();
+    }
+    top() { return this.stack.at(-1); }
+    getMin() { return this.minStack.at(-1); }
+}`;
 
 type Action = "init" | "push" | "pop" | "top" | "getMin" | "done";
 
@@ -244,6 +275,12 @@ export function MinStackVisualizer() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
       </Box>
+
+      <SweepTrace
+        traceTitle="Sweep & Trace: Min Stack"
+        steps={TRACE_STEPS}
+        code={TRACE_CODE}
+      />
 
       <Box>
         <StepLabel num={7} title="Implement" mb={2} />

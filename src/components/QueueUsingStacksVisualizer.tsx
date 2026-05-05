@@ -4,6 +4,7 @@ import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { SweepTrace } from "./SweepTrace";
 
 const OPS = [
   { op: "push", val: 1 },
@@ -12,6 +13,41 @@ const OPS = [
   { op: "pop", val: undefined },
   { op: "empty", val: undefined },
 ];
+
+const TRACE_STEPS = [
+  { label: "push(1):", text: "Push 1 onto inStack. inStack: [1], outStack: []" },
+  { label: "push(2):", text: "Push 2 onto inStack. inStack: [1, 2], outStack: []" },
+  { label: "peek():", text: "outStack is empty → drain inStack into outStack (pop from inStack, push to outStack). inStack: [], outStack: [2, 1]. Peek = top of outStack = 1." },
+  { label: "pop():", text: "outStack has values → pop directly. Pop 1 from outStack. inStack: [], outStack: [2]." },
+  { label: "empty():", text: "inStack is empty, outStack has [2] → not empty. Return false." },
+  { label: "Key insight:", text: "Each element moves from inStack → outStack at most once per lifetime. Amortized O(1) for all operations.", isAction: true },
+];
+
+const TRACE_CODE = `class MyQueue {
+    constructor() {
+        this.inStack = [];
+        this.outStack = [];
+    }
+    push(x) { this.inStack.push(x); }
+    pop() {
+        this._shiftStacks();
+        return this.outStack.pop();
+    }
+    peek() {
+        this._shiftStacks();
+        return this.outStack.at(-1);
+    }
+    empty() {
+        return !this.inStack.length &&
+               !this.outStack.length;
+    }
+    _shiftStacks() {
+        if (!this.outStack.length) {
+            while (this.inStack.length)
+                this.outStack.push(this.inStack.pop());
+        }
+    }
+}`;
 
 type Action = "init" | "push" | "peek" | "pop" | "empty" | "done";
 
@@ -247,6 +283,12 @@ export function QueueUsingStacksVisualizer() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
       </Box>
+
+      <SweepTrace
+        traceTitle="Sweep & Trace: Queue Using Stacks"
+        steps={TRACE_STEPS}
+        code={TRACE_CODE}
+      />
 
       <Box>
         <StepLabel num={7} title="Implement" mb={2} />

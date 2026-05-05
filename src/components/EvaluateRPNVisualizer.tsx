@@ -4,9 +4,36 @@ import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { SweepTrace } from "./SweepTrace";
 
 const TOKENS = ["2", "1", "+", "3", "*"];
 const OPERATORS = new Set(["+", "-", "*", "/"]);
+
+const TRACE_STEPS = [
+  { label: "Token '2':", text: "Operand. Push 2 onto stack. Stack: [2]" },
+  { label: "Token '1':", text: "Operand. Push 1 onto stack. Stack: [2, 1]" },
+  { label: "Token '+':", text: "Operator. Pop 1, pop 2. Compute 2 + 1 = 3. Push 3. Stack: [3]" },
+  { label: "Token '3':", text: "Operand. Push 3 onto stack. Stack: [3, 3]" },
+  { label: "Token '*':", text: "Operator. Pop 3, pop 3. Compute 3 * 3 = 9. Push 9. Stack: [9]" },
+  { label: "Result:", text: "Stack has one element: 9. Return 9.", isAction: true },
+];
+
+const TRACE_CODE = `function evalRPN(tokens) {
+    const stack = [];
+    for (const t of tokens) {
+        if (!isNaN(t)) {
+            stack.push(Number(t));
+        } else {
+            const b = stack.pop();
+            const a = stack.pop();
+            if (t === '+') stack.push(a + b);
+            else if (t === '-') stack.push(a - b);
+            else if (t === '*') stack.push(a * b);
+            else stack.push(Math.trunc(a / b));
+        }
+    }
+    return stack[0];
+}`;
 
 interface RPNStep {
   idx: number;
@@ -200,6 +227,12 @@ export function EvaluateRPNVisualizer() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
       </Box>
+
+      <SweepTrace
+        traceTitle="Sweep & Trace: Evaluate RPN"
+        steps={TRACE_STEPS}
+        code={TRACE_CODE}
+      />
 
       <Box>
         <StepLabel num={7} title="Implement" mb={2} />

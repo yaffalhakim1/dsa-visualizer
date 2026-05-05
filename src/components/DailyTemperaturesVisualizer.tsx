@@ -4,8 +4,35 @@ import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { SweepTrace } from "./SweepTrace";
 
 const TEMPS = [73, 74, 75, 71, 69, 72, 76, 73];
+
+const TRACE_STEPS = [
+  { label: "Day 0 (73°):", text: "Stack empty. Push index 0. Stack: [0], Answer: [—, —, —, —, —, —, —, —]" },
+  { label: "Day 1 (74°):", text: "74° > 73° (stack top)! Pop index 0: answer[0] = 1. Push index 1. Stack: [1], Answer: [1, —, —, —, —, —, —, —]" },
+  { label: "Day 2 (75°):", text: "75° > 74° (stack top)! Pop index 1: answer[1] = 1. Push index 2. Stack: [2], Answer: [1, 1, —, —, —, —, —, —]" },
+  { label: "Day 3 (71°):", text: "71° < 75° (stack top). Push index 3. Stack: [2, 3], Answer: [1, 1, —, —, —, —, —, —]" },
+  { label: "Day 4 (69°):", text: "69° < 71° (stack top). Push index 4. Stack: [2, 3, 4], Answer: [1, 1, —, —, —, —, —, —]" },
+  { label: "Day 5 (72°):", text: "72° > 69°! Pop 4: ans[4] = 1. 72° > 71°! Pop 3: ans[3] = 2. 72° < 75°. Push 5. Stack: [2, 5], Answer: [1, 1, —, 2, 1, —, —, —]" },
+  { label: "Day 6 (76°):", text: "76° > 72°! Pop 5: ans[5] = 1. 76° > 75°! Pop 2: ans[2] = 4. Push 6. Stack: [6], Answer: [1, 1, 4, 2, 1, 1, —, —]" },
+  { label: "Day 7 (73°):", text: "73° < 76° (stack top). Push index 7. Stack: [6, 7]" },
+  { label: "Done:", text: "Remaining indices 6, 7 have 0 warmer days. Final: [1, 1, 4, 2, 1, 1, 0, 0]", isAction: true },
+];
+
+const TRACE_CODE = `function dailyTemperatures(temps) {
+    const ans = new Array(temps.length).fill(0);
+    const stack = [];  // monotonic decreasing
+    for (let i = 0; i < temps.length; i++) {
+        while (stack.length &&
+               temps[i] > temps[stack.at(-1)]) {
+            const prev = stack.pop();
+            ans[prev] = i - prev;
+        }
+        stack.push(i);
+    }
+    return ans;
+}`;
 
 interface DTStep {
   idx: number;
@@ -187,6 +214,12 @@ export function DailyTemperaturesVisualizer() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
       </Box>
+
+      <SweepTrace
+        traceTitle="Sweep & Trace: Daily Temperatures (Monotonic Stack)"
+        steps={TRACE_STEPS}
+        code={TRACE_CODE}
+      />
 
       <Box>
         <StepLabel num={7} title="Implement" mb={2} />

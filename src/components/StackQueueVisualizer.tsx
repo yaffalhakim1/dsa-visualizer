@@ -6,8 +6,33 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { ChapterPrimer } from "./ChapterPrimer";
+import { SweepTrace } from "./SweepTrace";
 
 const INPUT = "({[]})";
+
+const TRACE_STEPS = [
+  { label: "Character '(' (Index 0):", text: "Opening bracket. Push onto stack. Stack: ['(']" },
+  { label: "Character '{' (Index 1):", text: "Opening bracket. Push onto stack. Stack: ['(', '{']" },
+  { label: "Character '[' (Index 2):", text: "Opening bracket. Push onto stack. Stack: ['(', '{', '[']" },
+  { label: "Character ']' (Index 3):", text: "Closing bracket. Top of stack is '[' — it matches! Pop '['. Stack: ['(', '{']" },
+  { label: "Character '}' (Index 4):", text: "Closing bracket. Top of stack is '{' — it matches! Pop '{'. Stack: ['(']" },
+  { label: "Character ')' (Index 5):", text: "Closing bracket. Top of stack is '(' — it matches! Pop '('. Stack: []" },
+  { label: "Result:", text: "Stack is empty after processing all characters → Valid!", isAction: true },
+];
+
+const TRACE_CODE = `function isValid(s) {
+    const pairs = {')': '(', ']': '[', '}': '{'};
+    const stack = [];
+    for (const ch of s) {
+        if (ch in '([{') stack.push(ch);
+        else {
+            if (!stack.length || stack.at(-1) !== pairs[ch])
+                return false;
+            stack.pop();
+        }
+    }
+    return stack.length === 0;
+}`;
 
 type Action = 'init' | 'push' | 'pop' | 'done';
 
@@ -285,6 +310,12 @@ export function StackQueueVisualizer() {
           </Text>
         </Flex>
       </Box>
+
+      <SweepTrace
+        traceTitle="Sweep & Trace: Valid Parentheses"
+        steps={TRACE_STEPS}
+        code={TRACE_CODE}
+      />
 
       <Box>
         <StepLabel num={7} title="Implement" mb={2} />
