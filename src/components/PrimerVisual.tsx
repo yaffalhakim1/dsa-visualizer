@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, Box } from "@chakra-ui/react";
 
 function ArrayAnim() {
   const items = [5, 2, 8, 1, 9];
@@ -281,12 +281,67 @@ function QueueAnim() {
   );
 }
 
+function BinarySearchAnim() {
+  const items = [2, 5, 8, 12, 16, 23, 38];
+  const [midIdx] = [3];
+  return (
+    <Flex gap={1} align="center" position="relative">
+      {items.map((v, i) => (
+        <Flex key={i} direction="column" align="center" gap={0.5}>
+          {i === 0 && (
+            <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 2 }}>
+              <Text fontSize="0.55rem" color="#4a7db5" fontWeight={700}>L</Text>
+            </motion.div>
+          )}
+          {i === items.length - 1 && (
+            <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 2, delay: 0.5 }}>
+              <Text fontSize="0.55rem" color="#c94a6b" fontWeight={700}>R</Text>
+            </motion.div>
+          )}
+          {i < items.length && i !== 0 && i !== items.length - 1 && (
+            <Box h="12px" />
+          )}
+          <motion.div
+            animate={{ scale: i === midIdx ? 1.08 : 1 }}
+            transition={{ repeat: Infinity, duration: 2 }}
+          >
+            <Flex
+              w="28px"
+              h="28px"
+              align="center"
+              justify="center"
+              borderRadius="md"
+              border="2px solid"
+              borderColor={i === midIdx ? "#c9952e" : "#e0d8d0"}
+              bg={i === midIdx ? "#faf6f0" : "white"}
+              fontSize="0.65rem"
+              fontWeight={600}
+              color="#1a1a2e"
+            >
+              {v}
+            </Flex>
+          </motion.div>
+          {i === midIdx && (
+            <motion.div animate={{ y: [0, 3, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
+              <Text fontSize="0.55rem" color="#c9952e" fontWeight={700}>mid</Text>
+            </motion.div>
+          )}
+          {i !== midIdx && (
+            <Box h="12px" />
+          )}
+        </Flex>
+      ))}
+    </Flex>
+  );
+}
+
 const ANIMS: Record<string, React.ReactNode> = {
   array: <ArrayAnim />,
   string: <StringAnim />,
   linkedlist: <LinkedListAnim />,
   stack: <StackAnim />,
   queue: <QueueAnim />,
+  binarysearch: <BinarySearchAnim />,
 };
 
 export function PrimerVisual({ topic }: { topic: string }) {

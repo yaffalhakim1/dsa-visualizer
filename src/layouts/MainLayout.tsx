@@ -82,7 +82,7 @@ const CHAPTERS: Chapter[] = [
     name: "Binary Search",
     path: "/binary-search",
     problems: [
-      { name: "Binary Search", url: `${LC}/binary-search/` },
+      { name: "Binary Search", route: "/binary-search" },
       { name: "Search Rotated Array", url: `${LC}/search-in-rotated-sorted-array/` },
       { name: "First & Last Position", url: `${LC}/find-first-and-last-position-of-element-in-sorted-array/` },
       { name: "Koko Eating Bananas", url: `${LC}/koko-eating-bananas/` },

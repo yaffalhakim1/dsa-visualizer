@@ -58,6 +58,16 @@ const PRIMERS: Record<string, PrimerSection> = {
     ],
     visualize: "Think of a checkout line at a grocery store. New people join at the back (enqueue). The person at the front gets served and leaves (dequeue). The animated stack in the visualizer is LIFO — picture it reversed for FIFO.",
   },
+  binarysearch: {
+    title: "What is Binary Search?",
+    items: [
+      { label: "Definition", desc: "Search algorithm on sorted data. Repeatedly divide the search interval in half — compare the middle element to the target, then discard the half that cannot contain it." },
+      { label: "Key Properties", desc: "O(log n) time. Works only on sorted data. Uses three pointers: L (left bound), R (right bound), mid (middle). Each step narrows the window by half." },
+      { label: "When to Use", desc: "Searching sorted arrays, finding boundaries (first/last occurrence), optimization problems where the answer space is monotonic (binary search on answer)." },
+      { label: "Common Patterns", desc: "Classic search, lower/upper bound, search rotated array, binary search on answer (Koko eating bananas, min capacity)." },
+    ],
+    visualize: "Picture a dictionary. You want the word 'mountain' — you open to the middle. If you see 'lake', you know 'mountain' must be in the back half. Toss the front half. Open to the middle of what's left. Repeat. Each step you throw away half the book. That's binary search — 1 billion items takes only 30 comparisons.",
+  },
 };
 
 interface ChapterPrimerProps {
