@@ -204,7 +204,8 @@ const ProblemItem = ({ problem, index, isActive }: { problem: Problem; index: nu
 
 const ChapterGroup = ({ chapter, isActive, pathname }: { chapter: Chapter; isActive: (p: string) => boolean; pathname: string }) => {
   const hasActiveProblem = chapter.problems?.some(p => p.route && isActive(p.route));
-  const prefixMatch = chapter.path && pathname.startsWith(chapter.path.replace(/\/[^/]+$/, "") + "/");
+  const prefixDir = chapter.path ? chapter.path.replace(/\/[^/]+$/, "") : "";
+  const prefixMatch = !!prefixDir && pathname.startsWith(prefixDir + "/");
   const active = chapter.path ? isActive(chapter.path) || prefixMatch : !!hasActiveProblem;
   const isDisabled = !chapter.path && !chapter.problems;
 
