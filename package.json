@@ -1,7 +1,9 @@
 {
-  "name": "dsa-visualizer",
+  "name": "dsa-playbook-visualizer",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Interactive step-by-step visualizer for DSA algorithms based on the 7-step interview workflow. Covers arrays, trees, graphs, binary search, sliding window, backtracking, and more.",
+  "keywords": ["dsa", "algorithms", "data-structures", "visualizer", "interview-prep", "leetcode", "coding-interview"],
   "type": "module",
   "scripts": {
     "dev": "vite",
