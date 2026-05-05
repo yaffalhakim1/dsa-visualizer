@@ -4,6 +4,7 @@ import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { SweepTrace } from "./SweepTrace";
 
 const DATA = [-1, 0, 3, 5, 9, 12];
 const TARGET = 9;
@@ -17,23 +18,40 @@ interface BSStep {
   activeLines: number[];
 }
 
-const BRUTE_FORCE = `def search(nums, target):
-    for i, num in enumerate(nums):
-        if num == target:
-            return i
-    return -1`;
+const TRACE_STEPS = [
+  { label: "Step 1:", text: "L=0, R=5. mid = 2 (value 3). 3 < 9 → search right half. New L=3, R=5." },
+  { label: "Step 2:", text: "L=3, R=5. mid = 4 (value 9). 9 === 9 → found at index 4!", isAction: true },
+  { label: "Analogy:", text: "Like looking up a word in a dictionary — open to the middle, see which half your word falls in, repeat. Each step cuts the search space in half." },
+];
 
-const OPTIMIZED = `def search(nums, target):
-    L, R = 0, len(nums) - 1
-    while L <= R:
-        mid = (L + R) // 2
-        if nums[mid] == target:
-            return mid
-        if nums[mid] < target:
-            L = mid + 1
-        else:
-            R = mid - 1
-    return -1`;
+const TRACE_CODE = `function search(nums, target) {
+    let L = 0, R = nums.length - 1;
+    while (L <= R) {
+        const mid = Math.floor((L + R) / 2);
+        if (nums[mid] === target) return mid;
+        if (nums[mid] < target) L = mid + 1;
+        else R = mid - 1;
+    }
+    return -1;
+}`;
+
+const BRUTE_JS = `function linearSearch(nums, target) {
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] === target) return i;
+    }
+    return -1;
+}`;
+
+const BEST_JS = `function binarySearch(nums, target) {
+    let L = 0, R = nums.length - 1;
+    while (L <= R) {
+        const mid = Math.floor((L + R) / 2);
+        if (nums[mid] === target) return mid;
+        if (nums[mid] < target) L = mid + 1;
+        else R = mid - 1;
+    }
+    return -1;
+}`;
 
 function generateSteps(): BSStep[] {
   const steps: BSStep[] = [];
@@ -161,10 +179,16 @@ export function BinarySearchVisualizer() {
         </Flex>
       </Box>
 
+      <SweepTrace
+        traceTitle="Sweep & Trace: Binary Search"
+        steps={TRACE_STEPS}
+        code={TRACE_CODE}
+      />
+
       <Box>
         <StepLabel num={7} title="Implement" mb={2} />
-        <Heading size="sm" mb={4} color="#6b6350">Code</Heading>
-        <SolutionCompare bruteForceCode={BRUTE_FORCE} optimizedCode={OPTIMIZED} activeLines={s.activeLines} />
+        <Heading size="sm" mb={4} color="#6b6350">JS Code</Heading>
+        <SolutionCompare bruteForceCode={BRUTE_JS} optimizedCode={BEST_JS} activeLines={s.activeLines} />
       </Box>
     </VStack>
   );

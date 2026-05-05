@@ -15,7 +15,7 @@ export function SolutionCompare({ bruteForceCode, optimizedCode, activeLines = [
         <Text fontWeight="600" color="#8b3a2a" mb={2} fontSize="sm" letterSpacing="0.02em">Brute Force</Text>
         <Box borderRadius="sm" overflow="hidden" fontSize="sm">
           <SyntaxHighlighter
-            language="python"
+            language="javascript"
             style={oneLight}
             customStyle={{ margin: 0, padding: "12px", background: "#ffffff" }}
           >
@@ -27,7 +27,7 @@ export function SolutionCompare({ bruteForceCode, optimizedCode, activeLines = [
         <Text fontWeight="600" color="#2a6b4a" mb={2} fontSize="sm" letterSpacing="0.02em">Optimized</Text>
         <Box borderRadius="sm" overflow="hidden" fontSize="sm">
           <SyntaxHighlighter
-            language="python"
+            language="javascript"
             style={oneLight}
             wrapLines={true}
             lineProps={(lineNumber) => ({
