@@ -46,7 +46,7 @@ const CHAPTERS: Chapter[] = [
   {
     id: 7,
     name: "Linked Lists",
-    path: "/linked-lists",
+    path: "/ch7/concept",
     problems: [
       { name: "Reverse Linked List", url: `${LC}/reverse-linked-list/` },
       { name: "Merge Two Sorted Lists", url: `${LC}/merge-two-sorted-lists/` },
@@ -70,7 +70,7 @@ const CHAPTERS: Chapter[] = [
   {
     id: 10,
     name: "Trees",
-    path: "/trees",
+    path: "/ch10/concept",
     problems: [
       { name: "Max Depth of Binary Tree", url: `${LC}/maximum-depth-of-binary-tree/` },
       { name: "Invert Binary Tree", url: `${LC}/invert-binary-tree/` },
@@ -94,7 +94,7 @@ const CHAPTERS: Chapter[] = [
   {
     id: 14,
     name: "Sliding Window",
-    path: "/sliding-window",
+    path: "/ch14/concept",
     problems: [
       { name: "Max Sum Subarray", url: null },
       { name: "Longest Substring (Repeat)", url: `${LC}/longest-substring-without-repeating-characters/` },
@@ -106,7 +106,7 @@ const CHAPTERS: Chapter[] = [
   {
     id: 15,
     name: "Backtracking",
-    path: "/backtracking",
+    path: "/ch15/concept",
     problems: [
       { name: "Subsets", url: `${LC}/subsets/` },
       { name: "Permutations", url: `${LC}/permutations/` },
@@ -115,11 +115,11 @@ const CHAPTERS: Chapter[] = [
       { name: "Word Search", url: `${LC}/word-search/` },
     ],
   },
-  { id: 17, name: "Dynamic Programming" },
+  { id: 17, name: "Dynamic Programming", path: "/ch17/concept" },
   {
     id: 20,
     name: "Reverse Integer",
-    path: "/reverse-integer",
+    path: "/ch20/concept",
     problems: [
       { name: "Reverse Integer", url: `${LC}/reverse-integer/` },
       { name: "Palindrome Number", url: `${LC}/palindrome-number/` },

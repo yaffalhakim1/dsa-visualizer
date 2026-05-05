@@ -29,6 +29,12 @@ import { Search2DMatrixVisualizer } from "@/components/Search2DMatrixVisualizer"
 import { ArraysStringsConcept } from "@/components/ArraysStringsConcept";
 import { StacksQueuesConcept } from "@/components/StacksQueuesConcept";
 import { BinarySearchConcept } from "@/components/BinarySearchConcept";
+import { LinkedListsConcept } from "@/components/LinkedListsConcept";
+import { TreesConcept } from "@/components/TreesConcept";
+import { SlidingWindowConcept } from "@/components/SlidingWindowConcept";
+import { BacktrackingConcept } from "@/components/BacktrackingConcept";
+import { DPConcept } from "@/components/DPConcept";
+import { MathConcept } from "@/components/MathConcept";
 
 function App() {
   return (
@@ -43,6 +49,12 @@ function App() {
           <Route path="ch6/maximum-subarray" element={<MaximumSubarrayVisualizer />} />
           <Route path="ch6/contains-duplicate" element={<ContainsDuplicateVisualizer />} />
           <Route path="ch6/next-permutation" element={<NextPermutationVisualizer />} />
+          <Route path="ch7/concept" element={<LinkedListsConcept />} />
+          <Route path="ch10/concept" element={<TreesConcept />} />
+          <Route path="ch14/concept" element={<SlidingWindowConcept />} />
+          <Route path="ch15/concept" element={<BacktrackingConcept />} />
+          <Route path="ch17/concept" element={<DPConcept />} />
+          <Route path="ch20/concept" element={<MathConcept />} />
           <Route path="sliding-window" element={<SlidingWindowVisualizer />} />
           <Route path="arrays-strings" element={<TwoSumVisualizer />} />
           <Route path="prefix-sums" element={<PrefixSumVisualizer />} />
