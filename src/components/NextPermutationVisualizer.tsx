@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { SweepTrace } from "./SweepTrace";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 /**
  * CONSTANTS & CONFIGURATION
@@ -214,7 +215,7 @@ const PHASE_CONFIG: Record<NPPhase, { label: string; bg: string }> = {
 /**
  * SUB-COMPONENTS
  */
-const ProblemContext = () => (
+const ProblemContext = ({ step, phaseCfg }: { step: NPStep; phaseCfg: { label: string; bg: string } }) => (
   <VStack align="stretch" gap={4}>
     <Box p={4} bg="#f5f0eb" borderRadius="lg">
       <StepLabel num={1} title="Restate" />
@@ -236,6 +237,84 @@ const ProblemContext = () => (
         ))}
       </Box>
     </Flex>
+
+    <Box mt={8}>
+      <StepLabel num={3} title="Example" mb={3} />
+      <Box pb={4}>
+        <Flex justify="center" align="center" gap={2} wrap="wrap">
+          {step.array.map((val, idx) => {
+            const isPivot = idx === step.pivotIdx;
+            const isSuccessor = idx === step.successorIdx;
+            const inReverse = idx >= step.leftRev && idx <= step.rightRev;
+
+            let borderColor = "#e8e0d6";
+            let bg = "white";
+            let label = "";
+
+            if (isPivot) {
+              borderColor = "#4a7db5";
+              bg = "#f0f6fd";
+              label = "pivot";
+            } else if (isSuccessor) {
+              borderColor = "#c94a6b";
+              bg = "#fdf6f5";
+              label = "succ";
+            } else if (inReverse) {
+              borderColor = "#8b5cf6";
+              bg = "#f5f0fa";
+            }
+
+            return (
+              <Box key={idx} position="relative">
+                {label && (
+                  <Text position="absolute" top="-1.1rem" left="50%" transform="translateX(-50%)" fontSize="0.55rem" color={borderColor} fontWeight={700}>
+                    {label}
+                  </Text>
+                )}
+                <motion.div animate={{ scale: isPivot || isSuccessor ? 1.08 : 1 }}>
+                  <Flex
+                    w="52px"
+                    h="52px"
+                    align="center"
+                    justify="center"
+                    borderRadius="md"
+                    border="2px solid"
+                    borderColor={borderColor}
+                    bg={bg}
+                    fontSize="1rem"
+                    fontWeight={isPivot || isSuccessor ? 700 : 500}
+                    color="#1a1a2e"
+                  >
+                    {val}
+                  </Flex>
+                </motion.div>
+                <Text fontSize="0.6rem" color="#8b8589" textAlign="center" mt={1}>
+                  {idx}
+                </Text>
+              </Box>
+            );
+          })}
+        </Flex>
+      </Box>
+
+      <Flex mt={4} p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2}>
+        <Flex justify="space-between" align="center">
+          <Badge
+            bg={phaseCfg.bg}
+            color="white"
+            px={3}
+            py={1}
+            borderRadius="full"
+            fontSize="0.65rem"
+          >
+            {phaseCfg.label}
+          </Badge>
+        </Flex>
+        <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>
+          "{step.explanation}"
+        </Text>
+      </Flex>
+    </Box>
 
     <Flex gap={4}>
       <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
@@ -303,86 +382,15 @@ export function NextPermutationVisualizer() {
         <Text color="#8b8589" mb={6} fontSize="sm">
           {PROBLEM_CONFIG.subtitle}
         </Text>
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
 
-        <ProblemContext />
-
-        <Box mt={8}>
-          <StepLabel num={3} title="Example" mb={3} />
-          <Box pb={4}>
-            <Flex justify="center" align="center" gap={2} wrap="wrap">
-              {step.array.map((val, idx) => {
-                const isPivot = idx === step.pivotIdx;
-                const isSuccessor = idx === step.successorIdx;
-                const inReverse = idx >= step.leftRev && idx <= step.rightRev;
-
-                let borderColor = "#e8e0d6";
-                let bg = "white";
-                let label = "";
-
-                if (isPivot) {
-                  borderColor = "#4a7db5";
-                  bg = "#f0f6fd";
-                  label = "pivot";
-                } else if (isSuccessor) {
-                  borderColor = "#c94a6b";
-                  bg = "#fdf6f5";
-                  label = "succ";
-                } else if (inReverse) {
-                  borderColor = "#8b5cf6";
-                  bg = "#f5f0fa";
-                }
-
-                return (
-                  <Box key={idx} position="relative">
-                    {label && (
-                      <Text position="absolute" top="-1.1rem" left="50%" transform="translateX(-50%)" fontSize="0.55rem" color={borderColor} fontWeight={700}>
-                        {label}
-                      </Text>
-                    )}
-                    <motion.div animate={{ scale: isPivot || isSuccessor ? 1.08 : 1 }}>
-                      <Flex
-                        w="52px"
-                        h="52px"
-                        align="center"
-                        justify="center"
-                        borderRadius="md"
-                        border="2px solid"
-                        borderColor={borderColor}
-                        bg={bg}
-                        fontSize="1rem"
-                        fontWeight={isPivot || isSuccessor ? 700 : 500}
-                        color="#1a1a2e"
-                      >
-                        {val}
-                      </Flex>
-                    </motion.div>
-                    <Text fontSize="0.6rem" color="#8b8589" textAlign="center" mt={1}>
-                      {idx}
-                    </Text>
-                  </Box>
-                );
-              })}
-            </Flex>
-          </Box>
-
-          <Flex mt={4} p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2}>
-            <Flex justify="space-between" align="center">
-              <Badge
-                bg={phaseCfg.bg}
-                color="white"
-                px={3}
-                py={1}
-                borderRadius="full"
-                fontSize="0.65rem"
-              >
-                {phaseCfg.label}
-              </Badge>
-            </Flex>
-            <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>
-              "{step.explanation}"
-            </Text>
-          </Flex>
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
         </Box>
+
+        <ProblemContext step={step} phaseCfg={phaseCfg} />
       </Box>
 
       <SweepTrace

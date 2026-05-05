@@ -272,6 +272,12 @@ const SidebarContent = ({ isActive, pathname }: { isActive: (path: string) => bo
           </Text>
         </NavLink>
 
+        <NavLink to="/12-patterns" active={isActive("/12-patterns")}>
+          <Text fontSize="0.8125rem" color={isActive("/12-patterns") ? "#e8e0d6" : "#8b8589"} fontWeight={isActive("/12-patterns") ? 500 : 400}>
+            12 Essential Patterns
+          </Text>
+        </NavLink>
+
         <NavLink to="/interview-workflow" active={isActive("/interview-workflow")}>
           <Text fontSize="0.8125rem" color={isActive("/interview-workflow") ? "#e8e0d6" : "#8b8589"} fontWeight={isActive("/interview-workflow") ? 500 : 400}>
             7-Step Workflow
@@ -345,7 +351,7 @@ export function MainLayout() {
           p={{ base: "1rem", md: "2rem" }}
           pt={{ base: "4.5rem", md: "2rem" }}
           overflowY="auto"
-          pb="8rem"
+          pb="5rem"
           bg="#f5f0eb"
         >
           <Box maxW="1000px" mx="auto">

@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const DATA = [2, 7, 11, 15];
 const TARGET = 9;
@@ -97,6 +98,13 @@ export function TwoSumVisualizer() {
       <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
         <Heading size="md" mb={1}>Two Sum II — Input Array Is Sorted</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 14: Two Pointers & Sliding Window</Text>
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
 
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
@@ -111,24 +119,6 @@ export function TwoSumVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>numbers = [2,3,4], target = 6 → [1,3]</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">A baseline checks every pair with nested loops. It works on any array but takes O(n²) — each element gets paired with every other element.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Because the array is sorted, use two pointers and move the side that makes the sum too small or too large — O(n), one pass.</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">
-            Nested loops check every possible pair — O(n²). Most comparisons are wasted because the sorted order tells us which direction to move. Once we know <Text as="span" fontFamily="mono" fontSize="0.8rem">nums[L] + nums[R] &lt; target</Text>, every pair with the same L and a smaller R is also too small.
-          </Text>
-        </Box>
 
         <Box pb={4}>
           <StepLabel num={3} title="Example" mb={3} />
@@ -185,6 +175,26 @@ export function TwoSumVisualizer() {
           </Flex>
           <Text color="#6b6350" fontSize="md" fontStyle="italic">"{currentVisualStep.explanation}"</Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">A baseline checks every pair with nested loops. It works on any array but takes O(n²) — each element gets paired with every other element.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Because the array is sorted, use two pointers and move the side that makes the sum too small or too large — O(n), one pass.</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">
+            Nested loops check every possible pair — O(n²). Most comparisons are wasted because the sorted order tells us which direction to move. Once we know <Text as="span" fontFamily="mono" fontSize="0.8rem">nums[L] + nums[R] &lt; target</Text>, every pair with the same L and a smaller R is also too small.
+          </Text>
+        </Box>
+
+
       </Box>
 
       <Box>

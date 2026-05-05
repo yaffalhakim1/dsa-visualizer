@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { SweepTrace } from "./SweepTrace";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const PILES = [3, 6, 7, 11];
 const H = 8;
@@ -110,6 +111,13 @@ export function KokoEatingBananasVisualizer() {
       <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
         <Heading size="md" mb={1}>Koko Eating Bananas</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 13: Sorting & Searching — Binary Search on Answer</Text>
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
 
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
@@ -125,22 +133,6 @@ export function KokoEatingBananasVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>One pile, any H → answer = ceil(pile/H).</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Try k = 1, 2, 3, ... up to max(piles). For each speed, sum ceil(pile/k) for all piles. O(n * maxP).</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Binary search on the answer k in [1, max(piles)]. Test the middle speed — if it works, try slower; if not, go faster. O(n log maxP).</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">Trying every speed linearly means O(n * maxP) — maxP can be 10^9. Binary search reduces the speed tests from maxP to log(maxP).</Text>
-        </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
         <Text fontSize="0.75rem" color="#8b8589" mb={3}>Piles: [3, 6, 7, 11] — Deadline: H = 8h — Find min speed k</Text>
@@ -215,6 +207,22 @@ export function KokoEatingBananasVisualizer() {
           </Flex>
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">Try k = 1, 2, 3, ... up to max(piles). For each speed, sum ceil(pile/k) for all piles. O(n * maxP).</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Binary search on the answer k in [1, max(piles)]. Test the middle speed — if it works, try slower; if not, go faster. O(n log maxP).</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">Trying every speed linearly means O(n * maxP) — maxP can be 10^9. Binary search reduces the speed tests from maxP to log(maxP).</Text>
+        </Box>
       </Box>
 
       <SweepTrace

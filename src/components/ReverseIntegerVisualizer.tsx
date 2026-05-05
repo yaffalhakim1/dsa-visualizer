@@ -4,6 +4,7 @@ import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const INPUT = 123;
 
@@ -65,6 +66,13 @@ export function ReverseIntegerVisualizer() {
       <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
         <Heading size="md" mb={1}>Reverse Integer</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 20: Math & Numbers</Text>
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
 
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
@@ -80,22 +88,6 @@ export function ReverseIntegerVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Overflow → return 0</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Convert to string, reverse, convert back. Simple but dodges the arithmetic exercise.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Pop digits with modulo 10, push into result by multiplying by 10 and adding. Pure arithmetic, O(d) time, O(1) space.</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">String conversion works but does not teach the core arithmetic pattern. Real interview value is showing you can manipulate digits mathematically.</Text>
-        </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
         <Box pb={4}>
@@ -139,6 +131,24 @@ export function ReverseIntegerVisualizer() {
           </Flex>
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">Convert to string, reverse, convert back. Simple but dodges the arithmetic exercise.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Pop digits with modulo 10, push into result by multiplying by 10 and adding. Pure arithmetic, O(d) time, O(1) space.</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">String conversion works but does not teach the core arithmetic pattern. Real interview value is showing you can manipulate digits mathematically.</Text>
+        </Box>
+
+
       </Box>
 
       <Box>

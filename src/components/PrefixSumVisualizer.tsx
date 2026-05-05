@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const NUMS = [3, 1, 4, 1, 5, 9];
 
@@ -87,6 +88,13 @@ export function PrefixSumVisualizer() {
       <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
         <Heading size="md" mb={1}>Prefix Sum</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 6: Arrays & Strings</Text>
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
 
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
@@ -101,24 +109,6 @@ export function PrefixSumVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Leading zero handles sum(0, i) uniformly.</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Loop from left to right each time you need a sum — O(n) per query. For m queries on n elements, thats O(m·n).</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Precompute cumulative sums once (O(n)). Then any range sum is just <Text as="span" fontFamily="mono" fontSize="0.8rem">prefix[R+1] - prefix[L]</Text> (O(1)).</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">
-            Without prefix sums, every range sum query loops from L to R. For m queries, the same elements get summed over and over — each query duplicates work other queries already did.
-          </Text>
-        </Box>
 
         <Box py={4}>
           <StepLabel num={3} title="Example" mb={3} />
@@ -193,6 +183,26 @@ export function PrefixSumVisualizer() {
             "{currentVisualStep.explanation}"
           </Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">Loop from left to right each time you need a sum — O(n) per query. For m queries on n elements, thats O(m·n).</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Precompute cumulative sums once (O(n)). Then any range sum is just <Text as="span" fontFamily="mono" fontSize="0.8rem">prefix[R+1] - prefix[L]</Text> (O(1)).</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">
+            Without prefix sums, every range sum query loops from L to R. For m queries, the same elements get summed over and over — each query duplicates work other queries already did.
+          </Text>
+        </Box>
+
+
       </Box>
 
       <Box>

@@ -4,6 +4,7 @@ import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const GRID = [
   [1, 1, 0, 0, 0],
@@ -136,6 +137,14 @@ export function GraphVisualizer() {
         <Heading size="md" mb={1}>Number of Islands</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 12: Graphs — DFS Flood Fill</Text>
 
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
+
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
           <Text fontSize="0.9rem" color="#1a1a2e">Given a 2D grid of 1's (land) and 0's (water), count how many islands exist. An island is land cells connected vertically or horizontally.</Text>
@@ -150,24 +159,6 @@ export function GraphVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Diagonal connections do NOT count</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">For each cell, check if its land and unvisited. If so, mark the whole island using recursive DFS visiting all 4 neighbors. O(mn) but recursion depth can be large.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Same DFS, but use iterative stack or BFS to avoid recursion depth issues. Mark visited in-place by changing grid values — no extra visited set needed.</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">
-            Recursive DFS uses the call stack as the frontier. For large islands (hundreds of thousands of cells), Python's recursion limit can be hit. An iterative approach avoids this entirely.
-          </Text>
-        </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
         <Box py={4}>
@@ -214,6 +205,24 @@ export function GraphVisualizer() {
             "{step.explanation}"
           </Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">For each cell, check if its land and unvisited. If so, mark the whole island using recursive DFS visiting all 4 neighbors. O(mn) but recursion depth can be large.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Same DFS, but use iterative stack or BFS to avoid recursion depth issues. Mark visited in-place by changing grid values — no extra visited set needed.</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">
+            Recursive DFS uses the call stack as the frontier. For large islands (hundreds of thousands of cells), Python's recursion limit can be hit. An iterative approach avoids this entirely.
+          </Text>
+        </Box>
       </Box>
 
       <Box>

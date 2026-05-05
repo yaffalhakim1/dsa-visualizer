@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton, Text, HStack, Stack } from "@chakra-ui/react";
+import { Box, Flex, IconButton, Text } from "@chakra-ui/react";
 import { Play, Pause, SkipBack, SkipForward, RotateCcw } from "lucide-react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 
@@ -23,86 +23,84 @@ export function GlobalControlBar() {
       bottom="0"
       left={{ base: "0", md: "260px" }}
       right="0"
-      bg="#1a1a2e"
-      borderTop="1px solid"
-      borderColor="rgba(232,224,214,0.1)"
-      p={{ base: 3, md: 4 }}
+      pointerEvents="none"
       zIndex={1000}
     >
-      <Stack
-        direction={{ base: "column", md: "row" }}
-        align="center"
-        justify="space-between"
-        maxW="1200px"
-        mx="auto"
+      <Flex
+        justify="center"
+        pointerEvents="auto"
         px={{ base: 2, md: 4 }}
-        gap={{ base: 4, md: 8 }}
+        pb={{ base: 2, md: 3 }}
       >
-        <Flex justify="space-between" w={{ base: "full", md: "auto" }} align="center">
-          <HStack gap={{ base: 2, md: 4 }}>
-            <IconButton
-              aria-label="Reset"
-              size="xs"
-              variant="ghost"
-              onClick={reset}
-              color="#8b8589"
-              _hover={{ color: "#e8e0d6", bg: "rgba(232,224,214,0.1)" }}
-            >
-              <RotateCcw size={16} />
-            </IconButton>
+        <Flex
+          align="center"
+          gap={{ base: 1.5, md: 3 }}
+          bg="rgba(26,26,46,0.95)"
+          border="1px solid"
+          borderColor="rgba(232,224,214,0.12)"
+          borderRadius={{ base: "lg", md: "xl" }}
+          px={{ base: 2.5, md: 4 }}
+          py={2}
+          boxShadow="0 4px 24px rgba(0,0,0,0.3)"
+          backdropFilter="blur(8px)"
+          maxW={{ base: "full", md: "600px" }}
+          w="full"
+          justify="center"
+        >
+          <IconButton
+            aria-label="Reset"
+            size="2xs"
+            variant="ghost"
+            onClick={reset}
+            color="#8b8589"
+            _hover={{ color: "#e8e0d6", bg: "rgba(232,224,214,0.1)" }}
+          >
+            <RotateCcw size={13} />
+          </IconButton>
 
-            <HStack gap={2}>
-              <IconButton
-                aria-label="Previous Step"
-                size="sm"
-                onClick={prevStep}
-                disabled={currentStep === 0}
-                color="#8b8589"
-                _hover={{ color: "#e8e0d6", bg: "rgba(232,224,214,0.1)" }}
-                _disabled={{ opacity: 0.3, cursor: "not-allowed" }}
-              >
-                <SkipBack size={18} />
-              </IconButton>
+          <IconButton
+            aria-label="Previous Step"
+            size="2xs"
+            onClick={prevStep}
+            disabled={currentStep === 0}
+            color="#8b8589"
+            _hover={{ color: "#e8e0d6", bg: "rgba(232,224,214,0.1)" }}
+            _disabled={{ opacity: 0.3, cursor: "not-allowed" }}
+          >
+            <SkipBack size={15} />
+          </IconButton>
 
-              <IconButton
-                aria-label={isPlaying ? "Pause" : "Play"}
-                size="md"
-                onClick={togglePlay}
-                bg="#c9952e"
-                color="#1a1a2e"
-                borderRadius="full"
-                _hover={{ bg: "#d4a853" }}
-              >
-                {isPlaying ? <Pause size={20} /> : <Play size={20} />}
-              </IconButton>
+          <IconButton
+            aria-label={isPlaying ? "Pause" : "Play"}
+            size="xs"
+            onClick={togglePlay}
+            bg="#c9952e"
+            color="#1a1a2e"
+            borderRadius="full"
+            _hover={{ bg: "#d4a853" }}
+          >
+            {isPlaying ? <Pause size={17} /> : <Play size={17} />}
+          </IconButton>
 
-              <IconButton
-                aria-label="Next Step"
-                size="sm"
-                onClick={nextStep}
-                disabled={currentStep === totalSteps - 1}
-                color="#8b8589"
-                _hover={{ color: "#e8e0d6", bg: "rgba(232,224,214,0.1)" }}
-                _disabled={{ opacity: 0.3, cursor: "not-allowed" }}
-              >
-                <SkipForward size={18} />
-              </IconButton>
-            </HStack>
-          </HStack>
-          
-          <Box display={{ base: "block", md: "none" }}>
-             <Text fontSize="2xs" color="#8b8589">
-               Step {currentStep + 1} / {totalSteps}
-             </Text>
-          </Box>
-        </Flex>
+          <IconButton
+            aria-label="Next Step"
+            size="2xs"
+            onClick={nextStep}
+            disabled={currentStep === totalSteps - 1}
+            color="#8b8589"
+            _hover={{ color: "#e8e0d6", bg: "rgba(232,224,214,0.1)" }}
+            _disabled={{ opacity: 0.3, cursor: "not-allowed" }}
+          >
+            <SkipForward size={15} />
+          </IconButton>
 
-        <Flex align="center" gap={{ base: 4, md: 8 }} flex="1" w="full">
-          <Box flex="1">
-            <Text fontSize="xs" mb={1} color="#8b8589" textAlign="center" display={{ base: "none", md: "block" }}>
-              Step {currentStep + 1} of {totalSteps}
+          <Box w="1px" h="18px" bg="rgba(232,224,214,0.12)" />
+
+          <Box w={{ base: "80px", md: "120px" }}>
+            <Text fontSize="0.55rem" mb={0.5} color="#8b8589" textAlign="center">
+              Step {currentStep + 1} / {totalSteps}
             </Text>
-            <Box w="full" h="4px" bg="rgba(232,224,214,0.15)" borderRadius="full" overflow="hidden">
+            <Box w="full" h="3px" bg="rgba(232,224,214,0.15)" borderRadius="full" overflow="hidden">
               <Box
                 h="full"
                 bg="#c9952e"
@@ -111,26 +109,28 @@ export function GlobalControlBar() {
               />
             </Box>
           </Box>
-        </Flex>
 
-        <HStack gap={3} w={{ base: "full", md: "200px" }} justify={{ base: "center", md: "flex-end" }}>
-          <Text fontSize="xs" color="#8b8589" whiteSpace="nowrap">
-            Speed
-          </Text>
-          <input
-            type="range"
-            min={200}
-            max={3000}
-            step={100}
-            value={playbackSpeed}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlaybackSpeed(Number(e.target.value))}
-            style={{ width: "80px", height: "4px", accentColor: "#c9952e", cursor: "pointer" }}
-          />
-          <Text fontSize="xs" color="#8b8589" w="2.5rem" textAlign="right">
-            {(playbackSpeed / 1000).toFixed(1)}s
-          </Text>
-        </HStack>
-      </Stack>
+          <Box w="1px" h="18px" bg="rgba(232,224,214,0.12)" display={{ base: "none", md: "block" }} />
+
+          <Flex align="center" gap={2} display={{ base: "none", md: "flex" }}>
+            <Text fontSize="0.6rem" color="#8b8589" whiteSpace="nowrap">
+              Speed
+            </Text>
+            <input
+              type="range"
+              min={200}
+              max={3000}
+              step={100}
+              value={playbackSpeed}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlaybackSpeed(Number(e.target.value))}
+              style={{ width: "3.75rem", height: "0.1875rem", accentColor: "#c9952e", cursor: "pointer" }}
+            />
+            <Text fontSize="0.6rem" color="#8b8589" w="1.8rem" textAlign="right">
+              {(playbackSpeed / 1000).toFixed(1)}s
+            </Text>
+          </Flex>
+        </Flex>
+      </Flex>
     </Box>
   );
 }

@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 interface TreeNode {
   id: number;
@@ -237,6 +238,14 @@ export function TreeVisualizer() {
         <Heading size="md" mb={1}>Maximum Depth of Binary Tree</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 10: Trees & Recursion</Text>
 
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
+
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
           <Text fontSize="0.9rem" color="#1a1a2e">Given a binary tree, find its maximum depth — the number of nodes along the longest path from root down to farthest leaf.</Text>
@@ -260,24 +269,6 @@ export function TreeVisualizer() {
           </Box>
         </Flex>
 
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">For each node, compute the height of its left and right subtrees separately, then take the max. Repeats the same recursive work — O(n²) for skewed trees.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">One post-order DFS: each node returns 1 + max(depth(left), depth(right)). The recursion naturally computes each subtree depth exactly once — O(n).</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">
-            The brute force calls a separate height() function for each node, which recurses down the entire subtree every time. A leaf's height gets recomputed by every ancestor above it — the same work done over and over.
-          </Text>
-        </Box>
-
         <Box py={4} overflowX="auto">
           <StepLabel num={3} title="Example" mb={3} />
           <Flex justify="center" minW="400px">
@@ -298,6 +289,24 @@ export function TreeVisualizer() {
             "{stepInfo.explanation}"
           </Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">For each node, compute the height of its left and right subtrees separately, then take the max. Repeats the same recursive work — O(n²) for skewed trees.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">One post-order DFS: each node returns 1 + max(depth(left), depth(right)). The recursion naturally computes each subtree depth exactly once — O(n).</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">
+            The brute force calls a separate height() function for each node, which recurses down the entire subtree every time. A leaf's height gets recomputed by every ancestor above it — the same work done over and over.
+          </Text>
+        </Box>
       </Box>
 
       <Box>

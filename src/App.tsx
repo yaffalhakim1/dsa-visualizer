@@ -5,6 +5,7 @@ import { MainLayout } from "@/layouts/MainLayout";
 import { HomePage } from "@/components/HomePage";
 import { InterviewGuide } from "@/components/InterviewGuide";
 import { PatternsMistakes } from "@/components/PatternsMistakes";
+import { TwelvePatterns } from "@/components/TwelvePatterns";
 
 const SlidingWindowVisualizer = lazy(() => import("@/components/SlidingWindowVisualizer").then(m => ({ default: m.SlidingWindowVisualizer })));
 const TwoSumVisualizer = lazy(() => import("@/components/TwoSumVisualizer").then(m => ({ default: m.TwoSumVisualizer })));
@@ -141,6 +142,7 @@ function App() {
           <Route path="reverse-integer" element={
             <Suspense fallback={<PageLoader />}><ReverseIntegerVisualizer /></Suspense>
           } />
+          <Route path="12-patterns" element={<TwelvePatterns />} />
           <Route path="patterns-mistakes" element={<PatternsMistakes />} />
           <Route path="interview-workflow" element={<InterviewGuide />} />
         </Route>

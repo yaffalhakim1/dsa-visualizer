@@ -4,6 +4,7 @@ import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const DATA = [1, 2, 3];
 
@@ -90,6 +91,14 @@ export function BacktrackingVisualizer() {
         <Heading size="md" mb={1}>Subsets (Backtracking)</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 15: Recursion & Backtracking</Text>
 
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
+
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
           <Text fontSize="0.9rem" color="#1a1a2e">Given an array of unique numbers, return all possible subsets (the power set).</Text>
@@ -104,22 +113,6 @@ export function BacktrackingVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Duplicates need extra handling</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Bitmask approach: iterate 0 to 2^n - 1, decode each mask into a subset.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Backtracking: choose/take current element, recurse to next index, undo the choice. Cleaner pattern that generalizes to harder problems.</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">Bitmask approach works for subsets but does not extend to permutations, combinations, or constraint-based problems. Backtracking is the reusable pattern.</Text>
-        </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
         <Box pb={4}>
@@ -166,6 +159,22 @@ export function BacktrackingVisualizer() {
           </Flex>
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">Bitmask approach: iterate 0 to 2^n - 1, decode each mask into a subset.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Backtracking: choose/take current element, recurse to next index, undo the choice. Cleaner pattern that generalizes to harder problems.</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">Bitmask approach works for subsets but does not extend to permutations, combinations, or constraint-based problems. Backtracking is the reusable pattern.</Text>
+        </Box>
       </Box>
 
       <Box>

@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { SweepTrace } from "./SweepTrace";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const TOKENS = ["2", "1", "+", "3", "*"];
 const OPERATORS = new Set(["+", "-", "*", "/"]);
@@ -152,6 +153,13 @@ export function EvaluateRPNVisualizer() {
       <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
         <Heading size="md" mb={1}>Evaluate Reverse Polish Notation</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 8: Stacks & Queues — Postfix Evaluation</Text>
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
 
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
@@ -165,22 +173,6 @@ export function EvaluateRPNVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono">Division truncates toward zero. No division by zero. Input always valid.</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Could recursively parse the postfix expression into a tree, then evaluate bottom-up. More complex, still O(n) but extra memory for the tree.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Stack-based: push numbers, pop two for operators, push result. One pass, O(n).</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">The recursive tree approach uses extra O(n) memory for nodes. Stack-based evaluation is more memory-efficient and simpler.</Text>
-        </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
         <Text fontSize="0.75rem" color="#8b8589" mb={3}>"{TOKENS.join(" ")}" = ((2 + 1) * 3) = 9</Text>
@@ -226,6 +218,22 @@ export function EvaluateRPNVisualizer() {
           </Flex>
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">Could recursively parse the postfix expression into a tree, then evaluate bottom-up. More complex, still O(n) but extra memory for the tree.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Stack-based: push numbers, pop two for operators, push result. One pass, O(n).</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">The recursive tree approach uses extra O(n) memory for nodes. Stack-based evaluation is more memory-efficient and simpler.</Text>
+        </Box>
       </Box>
 
       <SweepTrace

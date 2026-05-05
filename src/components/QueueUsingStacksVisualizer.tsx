@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { SweepTrace } from "./SweepTrace";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const OPS = [
   { op: "push", val: 1 },
@@ -212,6 +213,13 @@ export function QueueUsingStacksVisualizer() {
       <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
         <Heading size="md" mb={1}>Implement Queue Using Stacks</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 8: Stacks & Queues — Two-Stack Queue</Text>
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
 
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
@@ -225,22 +233,6 @@ export function QueueUsingStacksVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono">pop/peek on empty queue → undefined. Only use push and pop from arrays.</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Use one stack: to push, reverse the entire stack with a temp stack. O(n) per push.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Two stacks: inStack for pushes, outStack for pops. Drain inStack into outStack only when outStack is empty. Amortized O(1) for all operations.</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">The one-stack approach reverses the whole stack on every push — O(n) per operation. Must amortize the cost.</Text>
-        </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
         <Text fontSize="0.75rem" color="#8b8589" mb={2}>Operations: push(1), push(2), peek(), pop(), empty()</Text>
@@ -282,6 +274,22 @@ export function QueueUsingStacksVisualizer() {
           </Flex>
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">Use one stack: to push, reverse the entire stack with a temp stack. O(n) per push.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Two stacks: inStack for pushes, outStack for pops. Drain inStack into outStack only when outStack is empty. Amortized O(1) for all operations.</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">The one-stack approach reverses the whole stack on every push — O(n) per operation. Must amortize the cost.</Text>
+        </Box>
       </Box>
 
       <SweepTrace

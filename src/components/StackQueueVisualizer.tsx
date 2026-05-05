@@ -6,6 +6,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { SweepTrace } from "./SweepTrace";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const INPUT = "({[]})";
 
@@ -169,6 +170,14 @@ export function StackQueueVisualizer() {
         <Heading size="md" mb={1}>Valid Parentheses</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 8: Stacks & Queues</Text>
 
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
+
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
           <Text fontSize="0.9rem" color="#1a1a2e">Given a string of brackets () {} [], check if every opening bracket has the right closing bracket in the correct order.</Text>
@@ -181,24 +190,6 @@ export function StackQueueVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>"(]" → False</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Keep removing matching pairs from the string until nothing changes. Each pass scans the whole string — O(n²) in the worst case.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Push opening brackets onto a stack. When you see a closing bracket, check if it matches the one on top. One pass, O(n).</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">
-            Removing matching pairs by string replacement scans the entire string each time. In the worst case (nested brackets like "(((...)))"), only one pair is removed per pass — O(n²) total.
-          </Text>
-        </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
         <Flex gap={8} align="flex-start" justify="center" minH="300px" py={4}>
@@ -306,6 +297,22 @@ export function StackQueueVisualizer() {
             "{currentVisualStep.explanation}"
           </Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">Repeatedly remove matching pairs with string replace until none remain. O(n²) worst-case due to repeated scanning.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Push opening brackets onto a stack. When a closing bracket is found, check if it matches the top. If not, invalid. O(n) one pass.</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">String replace on every iteration rescan characters that have already been validated — most comparisons are redundant. A stack lets you validate in one pass with O(1) per character.</Text>
+        </Box>
       </Box>
 
       <SweepTrace

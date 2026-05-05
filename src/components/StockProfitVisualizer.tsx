@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { SweepTrace } from "./SweepTrace";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const DATA = [7, 1, 5, 3, 6, 4];
 
@@ -94,6 +95,14 @@ export function StockProfitVisualizer() {
         <Heading size="md" mb={1}>Best Time to Buy & Sell Stock</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Ch 6: Arrays & Strings — Single Pass</Text>
 
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
+
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
           <Text fontSize="0.9rem" color="#1a1a2e">Pick one day to buy and a later day to sell for max profit. If no profit possible, return 0.</Text>
@@ -107,22 +116,6 @@ export function StockProfitVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Single day → profit 0</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Check every buy/sell pair. O(n²) — compares every day against every later day.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Track lowest price as you scan. For each day, compute profit selling today. Keep max. O(n), one pass, O(1) memory.</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">Nested loops repeat the same scan. For each buy day, every later sell day is checked — even though we only need the highest price after each buy.</Text>
-        </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
         <Box pb={4}>
@@ -161,6 +154,24 @@ export function StockProfitVisualizer() {
           </Flex>
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">Check every buy/sell pair. O(n²) — compares every day against every later day.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Track lowest price as you scan. For each day, compute profit selling today. Keep max. O(n), one pass, O(1) memory.</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">Nested loops repeat the same scan. For each buy day, every later sell day is checked — even though we only need the highest price after each buy.</Text>
+        </Box>
+
+
       </Box>
 
       <SweepTrace

@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { SweepTrace } from "./SweepTrace";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const TEMPS = [73, 74, 75, 71, 69, 72, 76, 73];
 
@@ -132,6 +133,13 @@ export function DailyTemperaturesVisualizer() {
       <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
         <Heading size="md" mb={1}>Daily Temperatures</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 8: Stacks & Queues — Monotonic Stack</Text>
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
 
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
@@ -145,22 +153,6 @@ export function DailyTemperaturesVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono">If no warmer day, answer = 0. Single element → [0].</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">For each day, scan all future days until a warmer temp is found. O(n²) worst case.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Monotonic decreasing stack of indices. When a warmer day arrives, pop all cooler days and record answer. O(n) one pass.</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">Nested loops re-scan future days for every index. In a decreasing sequence, each day scans all remaining days — O(n²).</Text>
-        </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
         <Flex gap={6} align="flex-start" justify="center" wrap="wrap">
@@ -213,6 +205,22 @@ export function DailyTemperaturesVisualizer() {
           </Flex>
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">For each day, scan all future days until a warmer temp is found. O(n²) worst case.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Monotonic decreasing stack of indices. When a warmer day arrives, pop all cooler days and record answer. O(n) one pass.</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">Nested loops re-scan future days for every index. In a decreasing sequence, each day scans all remaining days — O(n²).</Text>
+        </Box>
       </Box>
 
       <SweepTrace

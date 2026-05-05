@@ -123,12 +123,25 @@ export function HomePage() {
               How to Use
             </Text>
           </Flex>
-          <Text color="#8b8589" fontSize="0.875rem" lineHeight="1.8">
-            Navigate to any chapter from the sidebar. Each visualizer walks through the algorithm 
-            step-by-step — use the control bar at the bottom to play, pause, or step through. 
-            Speed slider adjusts the playback rate. The code panel compares brute-force and optimized 
-            approaches side by side.
-          </Text>
+          <VStack align="stretch" gap={2}>
+            <Text color="#6b6350" fontSize="0.875rem" lineHeight="1.7">
+              Navigate to any chapter from the sidebar. Each visualizer follows 
+              the <Text as="span" fontWeight={600}>7-Step Interview Workflow</Text>:
+            </Text>
+            <Flex gap={2} wrap="wrap">
+              {["Restate", "Clarify", "Example", "Baseline", "Bottleneck", "Refine", "Implement"].map((s, i) => (
+                <Flex key={s} align="center" gap={1} px={2.5} py={1} borderRadius="full" bg="#faf6f0" border="1px solid" borderColor="#e8e0d6">
+                  <Flex w="18px" h="18px" borderRadius="full" align="center" justify="center" bg="#c9952e" color="white" fontSize="0.55rem" fontWeight={700}>{i + 1}</Flex>
+                  <Text fontSize="0.7rem" color="#6b6350" fontWeight={500}>{s}</Text>
+                </Flex>
+              ))}
+            </Flex>
+            <Text color="#8b8589" fontSize="0.85rem" lineHeight="1.7">
+              Read the problem, see the animated example, understand the bottleneck, then compare
+              brute-force vs optimized code. Use the bottom control bar to play, pause, or step through
+              each animation. Adjust the speed slider to match your pace.
+            </Text>
+          </VStack>
         </Box>
       </motion.div>
     </VStack>

@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { SweepTrace } from "./SweepTrace";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 const DATA = [2, 7, 11, 15];
 const TARGET = 9;
@@ -97,6 +98,14 @@ export function TwoSumHashMap() {
         <Heading size="md" mb={1}>Two Sum (Unsorted)</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Ch 6: Arrays & Strings — Hash Map Pattern</Text>
 
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
+
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
           <Text fontSize="0.9rem" color="#1a1a2e">Find two numbers that add up to target. Return their indices. Exactly one solution exists.</Text>
@@ -110,22 +119,6 @@ export function TwoSumHashMap() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Negative numbers and zeros allowed.</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Check every pair with nested loops. O(n²) — honest but slow.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Hash map stores each num as you go. For each num, check if complement (target - num) already seen. O(n), one pass.</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">Nested loops check every pair. For each i, j loops from i+1 to n — lots of redundant comparisons as i moves forward.</Text>
-        </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
         <Flex gap={6} align="flex-start" justify="center" wrap="wrap">
@@ -168,6 +161,22 @@ export function TwoSumHashMap() {
           </Flex>
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">Check every pair with nested loops. O(n²) — honest but slow.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Hash map stores each num as you go. For each num, check if complement (target - num) already seen. O(n), one pass.</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">Nested loops check every pair. For each i, j loops from i+1 to n — lots of redundant comparisons as i moves forward.</Text>
+        </Box>
       </Box>
 
       <SweepTrace

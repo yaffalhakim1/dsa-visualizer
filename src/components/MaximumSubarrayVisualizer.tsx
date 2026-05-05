@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { SweepTrace } from "./SweepTrace";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 
 /**
  * CONSTANTS & CONFIGURATION
@@ -153,7 +154,7 @@ const STEPS = genSteps();
 /**
  * SUB-COMPONENTS
  */
-const ProblemContext = () => (
+const ProblemContext = ({ step }: { step: KStep }) => (
   <VStack align="stretch" gap={4}>
     <Box p={4} bg="#f5f0eb" borderRadius="lg">
       <StepLabel num={1} title="Restate" />
@@ -175,6 +176,75 @@ const ProblemContext = () => (
         ))}
       </Box>
     </Flex>
+
+    <Box mt={8}>
+      <StepLabel num={3} title="Example" mb={3} />
+      <Box pb={4}>
+        <Flex justify="center" align="center" gap={1} wrap="wrap">
+          {DATA.map((val, i) => {
+            const inWindow = i >= step.window[0] && i <= step.window[1];
+            const isCurr = i === step.idx;
+            const style = inWindow ? UI_CONFIG.window.active : UI_CONFIG.window.inactive;
+
+            return (
+              <Box key={i} position="relative">
+                {isCurr && (
+                  <Text position="absolute" top="-1.25rem" left="50%" transform="translateX(-50%)" fontSize="0.55rem" color="#c9952e" fontWeight={700}>
+                    i
+                  </Text>
+                )}
+                <motion.div animate={{ scale: isCurr ? 1.08 : 1 }}>
+                  <Flex
+                    w="40px"
+                    h="44px"
+                    align="center"
+                    justify="center"
+                    borderRadius="md"
+                    border="2px solid"
+                    {...style}
+                  >
+                    {val}
+                  </Flex>
+                </motion.div>
+              </Box>
+            );
+          })}
+        </Flex>
+
+        <Flex justify="center" gap={6} mt={3} p={3} bg="#faf6f0" borderRadius="md">
+          <Text fontSize="0.8rem" color="#6b6350">
+            current:{" "}
+            <Box as="span" fontWeight={700} color={step.current <= 0 ? "#c94a4a" : "#4a9e6b"}>
+              {step.current}
+            </Box>
+          </Text>
+          <Text fontSize="0.8rem" color="#6b6350">
+            best: <Box as="span" fontWeight={700} color="#c9952e">{step.best}</Box>
+          </Text>
+          <Text fontSize="0.8rem" color="#6b6350">
+            window: <Box as="span" fontWeight={600} color="#8b8589">[{step.window[0]}..{step.window[1]}]</Box>
+          </Text>
+        </Flex>
+      </Box>
+
+      <Flex mt={4} p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2}>
+        <Flex justify="space-between" align="center">
+          <Badge
+            bg={step.done ? UI_CONFIG.status.done.bg : UI_CONFIG.status.scanning.bg}
+            color="white"
+            px={3}
+            py={1}
+            borderRadius="full"
+            fontSize="0.65rem"
+          >
+            {step.done ? UI_CONFIG.status.done.label : UI_CONFIG.status.scanning.label}
+          </Badge>
+        </Flex>
+        <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>
+          "{step.explanation}"
+        </Text>
+      </Flex>
+    </Box>
 
     <Flex gap={4}>
       <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
@@ -240,77 +310,15 @@ export function MaximumSubarrayVisualizer() {
         <Text color="#8b8589" mb={6} fontSize="sm">
           {PROBLEM_CONFIG.subtitle}
         </Text>
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
 
-        <ProblemContext />
-
-        <Box mt={8}>
-          <StepLabel num={3} title="Example" mb={3} />
-          <Box pb={4}>
-            <Flex justify="center" align="center" gap={1} wrap="wrap">
-              {DATA.map((val, i) => {
-                const inWindow = i >= step.window[0] && i <= step.window[1];
-                const isCurr = i === step.idx;
-                const style = inWindow ? UI_CONFIG.window.active : UI_CONFIG.window.inactive;
-
-                return (
-                  <Box key={i} position="relative">
-                    {isCurr && (
-                      <Text position="absolute" top="-1.25rem" left="50%" transform="translateX(-50%)" fontSize="0.55rem" color="#c9952e" fontWeight={700}>
-                        i
-                      </Text>
-                    )}
-                    <motion.div animate={{ scale: isCurr ? 1.08 : 1 }}>
-                      <Flex
-                        w="40px"
-                        h="44px"
-                        align="center"
-                        justify="center"
-                        borderRadius="md"
-                        border="2px solid"
-                        {...style}
-                      >
-                        {val}
-                      </Flex>
-                    </motion.div>
-                  </Box>
-                );
-              })}
-            </Flex>
-
-            <Flex justify="center" gap={6} mt={3} p={3} bg="#faf6f0" borderRadius="md">
-              <Text fontSize="0.8rem" color="#6b6350">
-                current:{" "}
-                <Box as="span" fontWeight={700} color={step.current <= 0 ? "#c94a4a" : "#4a9e6b"}>
-                  {step.current}
-                </Box>
-              </Text>
-              <Text fontSize="0.8rem" color="#6b6350">
-                best: <Box as="span" fontWeight={700} color="#c9952e">{step.best}</Box>
-              </Text>
-              <Text fontSize="0.8rem" color="#6b6350">
-                window: <Box as="span" fontWeight={600} color="#8b8589">[{step.window[0]}..{step.window[1]}]</Box>
-              </Text>
-            </Flex>
-          </Box>
-
-          <Flex mt={4} p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2}>
-            <Flex justify="space-between" align="center">
-              <Badge
-                bg={step.done ? UI_CONFIG.status.done.bg : UI_CONFIG.status.scanning.bg}
-                color="white"
-                px={3}
-                py={1}
-                borderRadius="full"
-                fontSize="0.65rem"
-              >
-                {step.done ? UI_CONFIG.status.done.label : UI_CONFIG.status.scanning.label}
-              </Badge>
-            </Flex>
-            <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>
-              "{step.explanation}"
-            </Text>
-          </Flex>
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
         </Box>
+
+        <ProblemContext step={step} />
       </Box>
 
       <SweepTrace

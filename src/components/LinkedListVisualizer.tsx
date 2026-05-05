@@ -5,6 +5,7 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
+import { InterviewWorkflow } from "./InterviewWorkflow";
 const DATA = [1, 2, 3, 4, 5];
 
 type StepStatus = 'setup' | 'rewiring' | 'done';
@@ -112,6 +113,14 @@ export function LinkedListVisualizer() {
         <Heading size="md" mb={1}>Reverse Linked List</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 7: Linked Lists</Text>
 
+        <Box mb={6}><InterviewWorkflow current={6} /></Box>
+
+        <Box p={3} bg="#faf6f0" borderRadius="lg" mb={6}>
+          <Text fontSize="0.8rem" color="#6b6350">
+            Each visualizer follows the 7-step interview workflow. Use the bottom control bar to step through animations and adjust speed.
+          </Text>
+        </Box>
+
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
           <Text fontSize="0.9rem" color="#1a1a2e">Given the head of a singly linked list, reverse the list so the tail becomes the new head. Return the new head.</Text>
@@ -125,24 +134,6 @@ export function LinkedListVisualizer() {
             <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Empty list → ∅</Text>
           </Box>
         </Flex>
-
-        <Flex gap={4} mb={3}>
-          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
-            <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Collect all node values into an array, reverse the array, then build a new list from the reversed values — O(n) time and O(n) extra space.</Text>
-          </Box>
-          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
-            <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Rewire each nodes next pointer to point backward as you traverse — save the next reference first, then flip. O(n) time, O(1) extra space.</Text>
-          </Box>
-        </Flex>
-
-        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
-          <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">
-            The brute-force copies every value into an array just to reverse it. The values themselves do not change — only the pointers do. That extra array is pure overhead.
-          </Text>
-        </Box>
 
         <Box pb={4} minH="200px">
           <StepLabel num={3} title="Example" mb={3} />
@@ -253,6 +244,24 @@ export function LinkedListVisualizer() {
             "{currentVisualStep.explanation}"
           </Text>
         </Flex>
+
+        <Flex gap={4} mb={3}>
+          <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
+            <StepLabel num={4} title="Baseline" />
+            <Text fontSize="0.85rem" color="#6b6350">Collect all node values into an array, reverse the array, then build a new list from the reversed values — O(n) time and O(n) extra space.</Text>
+          </Box>
+          <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
+            <StepLabel num={6} title="Refine" />
+            <Text fontSize="0.85rem" color="#6b6350">Rewire each nodes next pointer to point backward as you traverse — save the next reference first, then flip. O(n) time, O(1) extra space.</Text>
+          </Box>
+        </Flex>
+
+        <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
+          <StepLabel num={5} title="Bottleneck" mb={0.5} />
+          <Text fontSize="0.8rem" color="#6b6350">
+            The brute-force copies every value into an array just to reverse it. The values themselves do not change — only the pointers do. That extra array is pure overhead.
+          </Text>
+        </Box>
       </Box>
 
       <Box>
