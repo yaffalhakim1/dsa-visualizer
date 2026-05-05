@@ -198,7 +198,7 @@ export function KokoEatingBananasVisualizer() {
           </VStack>
         </Flex>
 
-        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2} mt={4}>
+        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2} mt={4} mb={8}>
           <Flex justify="space-between" align="center">
             <Text fontSize="sm" color="#8b8589">
               {s.phase === "done" ? `Answer: k = ${s.speed}` : s.phase === "test" ? `Speed ${s.speed} works — try slower` : s.phase === "adjust" ? `Speed ${s.speed} too slow — go faster` : "Searching..."}
@@ -208,7 +208,7 @@ export function KokoEatingBananasVisualizer() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
 
-        <Flex gap={4} mb={3}>
+        <Flex gap={4} mb={8}>
           <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
             <StepLabel num={4} title="Baseline" />
             <Text fontSize="0.85rem" color="#6b6350">Try k = 1, 2, 3, ... up to max(piles). For each speed, sum ceil(pile/k) for all piles. O(n * maxP).</Text>

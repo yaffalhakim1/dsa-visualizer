@@ -211,7 +211,7 @@ export function EvaluateRPNVisualizer() {
           </VStack>
         </Flex>
 
-        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2} mt={4}>
+        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2} mt={4} mb={8}>
           <Flex justify="space-between" align="center">
             <Text fontSize="sm" color="#8b8589">Stack size: <Box as="span" fontWeight={700} color="#1a1a2e">{s.stack.length}</Box></Text>
             <Badge bg={s.isOperator ? "orange.500" : s.idx < TOKENS.length ? "purple.500" : "green.500"} color="white" px={3} py={1} borderRadius="full" fontSize="0.65rem">{s.isOperator ? "Compute" : s.idx < TOKENS.length ? "Push" : "Done"}</Badge>
@@ -219,7 +219,7 @@ export function EvaluateRPNVisualizer() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
 
-        <Flex gap={4} mb={3}>
+        <Flex gap={4} mb={8}>
           <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
             <StepLabel num={4} title="Baseline" />
             <Text fontSize="0.85rem" color="#6b6350">Could recursively parse the postfix expression into a tree, then evaluate bottom-up. More complex, still O(n) but extra memory for the tree.</Text>

@@ -198,7 +198,7 @@ export function DailyTemperaturesVisualizer() {
           </Flex>
         </VStack>
 
-        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2} mt={4}>
+        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2} mt={4} mb={8}>
           <Flex justify="space-between" align="center">
             <Text fontSize="sm" color="#8b8589">Current day: <Box as="span" fontWeight={700} color="#1a1a2e">{s.idx >= 0 && s.idx < TEMPS.length ? `${s.idx} (${TEMPS[s.idx]}°)` : "—"}</Box></Text>
             <Badge bg={s.action === "pop" ? "green.500" : s.action === "done" ? "green.500" : "purple.500"} color="white" px={3} py={1} borderRadius="full" fontSize="0.65rem">{s.action === "pop" ? "Resolving" : s.action === "done" ? "Done" : "Scanning"}</Badge>
@@ -206,7 +206,7 @@ export function DailyTemperaturesVisualizer() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
 
-        <Flex gap={4} mb={3}>
+        <Flex gap={4} mb={8}>
           <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
             <StepLabel num={4} title="Baseline" />
             <Text fontSize="0.85rem" color="#6b6350">For each day, scan all future days until a warmer temp is found. O(n²) worst case.</Text>

@@ -283,7 +283,7 @@ export function StackQueueVisualizer() {
           </VStack>
         </Flex>
 
-        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2} mt={4}>
+        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2} mt={4} mb={8}>
           <Flex justify="space-between" align="center">
             <Flex align="center" gap={2}>
               <Text fontSize="sm" color="#8b8589">Stack size:</Text>
@@ -298,7 +298,7 @@ export function StackQueueVisualizer() {
           </Text>
         </Flex>
 
-        <Flex gap={4} mb={3}>
+        <Flex gap={4} mb={8}>
           <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
             <StepLabel num={4} title="Baseline" />
             <Text fontSize="0.85rem" color="#6b6350">Repeatedly remove matching pairs with string replace until none remain. O(n²) worst-case due to repeated scanning.</Text>

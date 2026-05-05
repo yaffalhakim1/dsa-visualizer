@@ -225,7 +225,7 @@ export function LinkedListVisualizer() {
           )}
         </Box>
 
-        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={3}>
+        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={3} mb={8}>
           <Flex justify="space-between" align="center">
             <Flex align="center" gap={4}>
               <Text fontFamily="mono" fontSize="sm" color="#8b8589">
@@ -245,7 +245,7 @@ export function LinkedListVisualizer() {
           </Text>
         </Flex>
 
-        <Flex gap={4} mb={3}>
+        <Flex gap={4} mb={8}>
           <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
             <StepLabel num={4} title="Baseline" />
             <Text fontSize="0.85rem" color="#6b6350">Collect all node values into an array, reverse the array, then build a new list from the reversed values — O(n) time and O(n) extra space.</Text>

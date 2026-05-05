@@ -180,7 +180,7 @@ export function SlidingWindowVisualizer() {
           </Flex>
         </Box>
 
-        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={3}>
+        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={3} mb={8}>
           <Flex justify="space-between" align="center">
             <Text fontFamily="mono" fontSize="xl" fontWeight="bold" color="#1a1a2e">
               Window: <Box as="span" color="#c9952e">[{currentVisualStep.window[0]}...{currentVisualStep.window[1]}]</Box>
@@ -209,7 +209,7 @@ export function SlidingWindowVisualizer() {
           </Text>
         </Flex>
 
-        <Flex gap={4} mb={3}>
+        <Flex gap={4} mb={8}>
           <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
             <StepLabel num={4} title="Baseline" />
             <Text fontSize="0.85rem" color="#6b6350">For each window position, recompute the sum from scratch by adding all k elements — O(n·k). Simple and correct, but slow.</Text>

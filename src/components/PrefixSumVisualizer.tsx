@@ -174,7 +174,7 @@ export function PrefixSumVisualizer() {
           </Flex>
         </Box>
 
-        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={3}>
+        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={3} mb={8}>
           <Flex justify="space-between" align="center">
             <Heading size="xs" textTransform="uppercase" color="#8b8589" letterSpacing="0.1em">Step</Heading>
             <Badge bg={uiConfig.color} color="white" px={3} py={1} borderRadius="full" fontSize="0.65rem">{uiConfig.label}</Badge>
@@ -184,7 +184,7 @@ export function PrefixSumVisualizer() {
           </Text>
         </Flex>
 
-        <Flex gap={4} mb={3}>
+        <Flex gap={4} mb={8}>
           <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
             <StepLabel num={4} title="Baseline" />
             <Text fontSize="0.85rem" color="#6b6350">Loop from left to right each time you need a sum — O(n) per query. For m queries on n elements, thats O(m·n).</Text>

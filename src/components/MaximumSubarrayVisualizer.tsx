@@ -227,7 +227,7 @@ const ProblemContext = ({ step }: { step: KStep }) => (
         </Flex>
       </Box>
 
-      <Flex mt={4} p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2}>
+      <Flex mt={4} p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2} mb={8}>
         <Flex justify="space-between" align="center">
           <Badge
             bg={step.done ? UI_CONFIG.status.done.bg : UI_CONFIG.status.scanning.bg}
@@ -246,7 +246,7 @@ const ProblemContext = ({ step }: { step: KStep }) => (
       </Flex>
     </Box>
 
-    <Flex gap={4}>
+    <Flex gap={4} mb={8}>
       <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
         <StepLabel num={4} title="Baseline" />
         <Text fontSize="0.85rem" color="#6b6350">

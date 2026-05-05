@@ -221,7 +221,7 @@ export function FirstLastPositionVisualizer() {
           </Flex>
         </Box>
 
-        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2}>
+        <Flex p={6} bg="#f5f0eb" borderRadius="xl" direction="column" gap={2} mb={8}>
           <Flex justify="space-between" align="center">
             <Flex align="center" gap={4}>
               <Text fontFamily="mono" fontSize="sm" color="#8b8589">First: <Box as="span" fontWeight={600} color={s.first >= 0 ? "#4a9e6b" : "#8b8589"}>{s.first >= 0 ? s.first : '?'}</Box></Text>
@@ -232,7 +232,7 @@ export function FirstLastPositionVisualizer() {
           <Text color="#6b6350" fontSize="md" fontStyle="italic" borderLeft="4px solid" borderColor="#c9952e" pl={4} py={1}>"{s.explanation}"</Text>
         </Flex>
 
-        <Flex gap={4} mb={3}>
+        <Flex gap={4} mb={8}>
           <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
             <StepLabel num={4} title="Baseline" />
             <Text fontSize="0.85rem" color="#6b6350">Linear scan: track first and last occurrence of target in one pass. O(n).</Text>
