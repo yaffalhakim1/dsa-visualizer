@@ -82,6 +82,12 @@ Instead of Mafs coordinate planes, render algorithm state as colored Chakra Box/
 - Left: Brute Force (warm red bg), Right: Optimized (warm green bg)
 - Props: `bruteForceCode`, `optimizedCode`, `activeLines` (highlights matching lines green)
 
+## Layout (MainLayout.tsx)
+- Reference pages (Home, 12 Patterns, 7-Step Workflow, Patterns & Mistakes, concept pages) get the sidebar (260px) + mobile header
+- Visualizer pages are **standalone** — no sidebar, no mobile header. Full-width content area (maxW=1200px)
+- `isSidebarPage` check in MainLayout: `["/", "/interview-workflow", "/12-patterns", "/patterns-mistakes"].includes(path) || path.includes("/concept")`
+- GlobalControlBar (floating pill) appears on all pages with algorithm steps
+
 ## Sidebar (MainLayout.tsx)
 - `CHAPTERS` array defines all chapters with `path` (visualizer link) and/or `problems[]`
 - Each problem has `name` + `route` (internal visualizer) or `url` (external LeetCode)

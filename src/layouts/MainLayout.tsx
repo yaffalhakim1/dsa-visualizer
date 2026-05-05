@@ -304,17 +304,20 @@ const SidebarContent = ({ isActive, pathname }: { isActive: (path: string) => bo
 export function MainLayout() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
+  const isSidebarPage = ["/", "/interview-workflow", "/12-patterns", "/patterns-mistakes"].includes(location.pathname) || location.pathname.includes("/concept");
 
   return (
     <Flex h="100vh" direction="column" bg="#f5f0eb">
       <Flex flex="1" overflow="hidden">
-        <Box display={{ base: "none", md: "block" }} w="16.25rem" flexShrink={0}>
-                  <SidebarContent isActive={isActive} pathname={location.pathname} />
-        </Box>
+        {isSidebarPage && (
+          <Box display={{ base: "none", md: "block" }} w="16.25rem" flexShrink={0}>
+            <SidebarContent isActive={isActive} pathname={location.pathname} />
+          </Box>
+        )}
 
         {/* Mobile Header */}
         <Box
-          display={{ base: "block", md: "none" }}
+          display={{ base: isSidebarPage ? "block" : "none", md: "none" }}
           position="fixed"
           top={0}
           left={0}
@@ -349,12 +352,12 @@ export function MainLayout() {
         <Box
           flex="1"
           p={{ base: "1rem", md: "2rem" }}
-          pt={{ base: "4.5rem", md: "2rem" }}
+          pt={{ base: isSidebarPage ? "4.5rem" : "1rem", md: "2rem" }}
           overflowY="auto"
           pb="5rem"
           bg="#f5f0eb"
         >
-          <Box maxW="1000px" mx="auto">
+          <Box maxW={isSidebarPage ? "1000px" : "1200px"} mx="auto">
             <Outlet />
           </Box>
         </Box>
