@@ -33,6 +33,7 @@ const CHAPTERS: Chapter[] = [
   {
     id: 6,
     name: "Arrays & Strings",
+    path: "/ch6/concept",
     problems: [
       { name: "Two Sum", route: "/ch6/two-sum" },
       { name: "Best Time to Buy & Sell Stock", route: "/ch6/best-time" },
@@ -57,6 +58,7 @@ const CHAPTERS: Chapter[] = [
   {
     id: 8,
     name: "Stacks & Queues",
+    path: "/ch8/concept",
     problems: [
       { name: "Valid Parentheses", route: "/ch8/valid-parentheses" },
       { name: "Min Stack", route: "/ch8/min-stack" },
@@ -80,13 +82,13 @@ const CHAPTERS: Chapter[] = [
   {
     id: 13,
     name: "Binary Search",
-    path: "/binary-search",
+    path: "/ch13/concept",
     problems: [
       { name: "Binary Search", route: "/binary-search" },
-      { name: "Search Rotated Array", url: `${LC}/search-in-rotated-sorted-array/` },
-      { name: "First & Last Position", url: `${LC}/find-first-and-last-position-of-element-in-sorted-array/` },
-      { name: "Koko Eating Bananas", url: `${LC}/koko-eating-bananas/` },
-      { name: "Search 2D Matrix", url: `${LC}/search-a-2d-matrix/` },
+      { name: "Search Rotated Array", route: "/ch13/search-rotated" },
+      { name: "First & Last Position", route: "/ch13/first-last-position" },
+      { name: "Koko Eating Bananas", route: "/ch13/koko-eating-bananas" },
+      { name: "Search 2D Matrix", route: "/ch13/search-2d-matrix" },
     ],
   },
   {

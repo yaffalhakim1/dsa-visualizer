@@ -5,7 +5,6 @@ import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
-import { ChapterPrimer } from "./ChapterPrimer";
 import { SweepTrace } from "./SweepTrace";
 
 const INPUT = "({[]})";
@@ -169,8 +168,6 @@ export function StackQueueVisualizer() {
       <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
         <Heading size="md" mb={1}>Valid Parentheses</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Chapter 8: Stacks & Queues</Text>
-
-        <ChapterPrimer topics={["stack", "queue"]} visualizing />
 
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />

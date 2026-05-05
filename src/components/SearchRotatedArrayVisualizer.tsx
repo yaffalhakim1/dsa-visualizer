@@ -6,11 +6,10 @@ import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
 import { SweepTrace } from "./SweepTrace";
 
+const DATA = [4, 5, 6, 7, 0, 1, 2];
+const TARGET = 0;
 
-const DATA = [-1, 0, 3, 5, 9, 12];
-const TARGET = 9;
-
-interface BSStep {
+interface SRAStep {
   L: number;
   R: number;
   mid: number;
@@ -20,9 +19,10 @@ interface BSStep {
 }
 
 const TRACE_STEPS = [
-  { label: "Step 1:", text: "L=0, R=5. mid = 2 (value 3). 3 < 9 → search right half. New L=3, R=5." },
-  { label: "Step 2:", text: "L=3, R=5. mid = 4 (value 9). 9 === 9 → found at index 4!", isAction: true },
-  { label: "Analogy:", text: "Like looking up a word in a dictionary — open to the middle, see which half your word falls in, repeat. Each step cuts the search space in half." },
+  { label: "Step 1:", text: "L=0, R=6. mid=3 (value 7). Left side [4,5,6,7] is sorted asc but 0 not in [4,7]. Search right: L=4." },
+  { label: "Step 2:", text: "L=4, R=6. mid=5 (value 1). Left side [0,1] is sorted. 0 is in [0,1]. Search left: R=4." },
+  { label: "Step 3:", text: "L=4, R=4. mid=4 (value 0). 0 === 0 → found at index 4!", isAction: true },
+  { label: "Key insight:", text: "At each step, one half is always sorted. Check if target is in the sorted half's range — if yes, search there. If no, it must be in the other half." },
 ];
 
 const TRACE_CODE = `function search(nums, target) {
@@ -30,55 +30,79 @@ const TRACE_CODE = `function search(nums, target) {
     while (L <= R) {
         const mid = Math.floor((L + R) / 2);
         if (nums[mid] === target) return mid;
-        if (nums[mid] < target) L = mid + 1;
-        else R = mid - 1;
+        if (nums[L] <= nums[mid]) {
+            if (nums[L] <= target && target < nums[mid])
+                R = mid - 1;
+            else L = mid + 1;
+        } else {
+            if (nums[mid] < target && target <= nums[R])
+                L = mid + 1;
+            else R = mid - 1;
+        }
     }
     return -1;
 }`;
 
-const BRUTE_JS = `function linearSearch(nums, target) {
+const BRUTE_JS = `function searchLinear(nums, target) {
     for (let i = 0; i < nums.length; i++) {
         if (nums[i] === target) return i;
     }
     return -1;
 }`;
 
-const BEST_JS = `function binarySearch(nums, target) {
+const BEST_JS = `function search(nums, target) {
     let L = 0, R = nums.length - 1;
     while (L <= R) {
         const mid = Math.floor((L + R) / 2);
         if (nums[mid] === target) return mid;
-        if (nums[mid] < target) L = mid + 1;
-        else R = mid - 1;
+        if (nums[L] <= nums[mid]) {
+            if (nums[L] <= target && target < nums[mid])
+                R = mid - 1;
+            else L = mid + 1;
+        } else {
+            if (nums[mid] < target && target <= nums[R])
+                L = mid + 1;
+            else R = mid - 1;
+        }
     }
     return -1;
 }`;
 
-function generateSteps(): BSStep[] {
-  const steps: BSStep[] = [];
+function generateSteps(): SRAStep[] {
+  const steps: SRAStep[] = [];
   let L = 0, R = DATA.length - 1;
-  steps.push({ L, R, mid: -1, found: false, explanation: "Start with the full array. L=0, R=5.", activeLines: [2] });
+  steps.push({ L, R, mid: -1, found: false, explanation: "Start with the full rotated array. L=0, R=6.", activeLines: [2] });
   while (L <= R) {
     const mid = Math.floor((L + R) / 2);
     if (DATA[mid] === TARGET) {
-      steps.push({ L, R, mid, found: true, explanation: `Found ${TARGET} at index ${mid}!`, activeLines: [5, 6] });
+      steps.push({ L, R, mid, found: true, explanation: `Found ${TARGET} at index ${mid}!`, activeLines: [4, 5] });
       return steps;
     }
-    if (DATA[mid] < TARGET) {
-      steps.push({ L, R, mid, found: false, explanation: `${DATA[mid]} < ${TARGET}, search right half. L = ${mid + 1}`, activeLines: [7, 8] });
-      L = mid + 1;
+    if (DATA[L] <= DATA[mid]) {
+      if (DATA[L] <= TARGET && TARGET < DATA[mid]) {
+        steps.push({ L, R, mid, found: false, explanation: `Left side [${DATA[L]}..${DATA[mid]}] is sorted. ${TARGET} is in range → search left. R = ${mid - 1}`, activeLines: [6, 7, 8] });
+        R = mid - 1;
+      } else {
+        steps.push({ L, R, mid, found: false, explanation: `Left side [${DATA[L]}..${DATA[mid]}] is sorted but ${TARGET} not in range → search right. L = ${mid + 1}`, activeLines: [6, 9] });
+        L = mid + 1;
+      }
     } else {
-      steps.push({ L, R, mid, found: false, explanation: `${DATA[mid]} > ${TARGET}, search left half. R = ${mid - 1}`, activeLines: [9, 10] });
-      R = mid - 1;
+      if (DATA[mid] < TARGET && TARGET <= DATA[R]) {
+        steps.push({ L, R, mid, found: false, explanation: `Right side [${DATA[mid]}..${DATA[R]}] is sorted. ${TARGET} is in range → search right. L = ${mid + 1}`, activeLines: [11, 12] });
+        L = mid + 1;
+      } else {
+        steps.push({ L, R, mid, found: false, explanation: `Right side [${DATA[mid]}..${DATA[R]}] is sorted but ${TARGET} not in range → search left. R = ${mid - 1}`, activeLines: [11, 13] });
+        R = mid - 1;
+      }
     }
   }
-  steps.push({ L: -1, R: -1, mid: -1, found: false, explanation: `${TARGET} not in array. Return -1.`, activeLines: [11] });
+  steps.push({ L: -1, R: -1, mid: -1, found: false, explanation: `${TARGET} not in array. Return -1.`, activeLines: [15] });
   return steps;
 }
 
 const STEPS = generateSteps();
 
-export function BinarySearchVisualizer() {
+export function SearchRotatedArrayVisualizer() {
   const { setTotalSteps, reset, setActiveLines, currentStep, isPlaying, playbackSpeed, nextStep } = useAlgorithmStore();
   const s = useMemo(() => STEPS[currentStep] || STEPS[0], [currentStep]);
 
@@ -93,41 +117,42 @@ export function BinarySearchVisualizer() {
   return (
     <VStack gap={8} align="stretch" w="full">
       <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
-        <Heading size="md" mb={1}>Binary Search</Heading>
-        <Text color="#8b8589" mb={6} fontSize="sm">Chapter 13: Sorting & Searching</Text>
+        <Heading size="md" mb={1}>Search in Rotated Sorted Array</Heading>
+        <Text color="#8b8589" mb={6} fontSize="sm">Chapter 13: Sorting & Searching — Modified Binary Search</Text>
 
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
-          <Text fontSize="0.9rem" color="#1a1a2e">Given a sorted array and a target, find the targets index. Return -1 if not found.</Text>
+          <Text fontSize="0.9rem" color="#1a1a2e">Given a rotated sorted array (e.g., [4,5,6,7,0,1,2]) and a target, find its index. Return -1 if not found. Must run in O(log n).</Text>
         </Box>
 
         <Flex gap={4} mb={3}>
           <Box flex="1" p={3} bg="#faf6f0" borderRadius="lg">
             <StepLabel num={2} title="Clarify" />
             <Text fontSize="0.65rem" color="#8b8589" textTransform="uppercase" letterSpacing="0.1em" fontWeight="600" mb={1}>Edge Cases</Text>
-            <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono">Sorted in ascending order? Duplicates?</Text>
-            <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Target at start, end, or not present</Text>
-            <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Empty array → -1</Text>
+            <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono">No duplicates, O(log n) required. Array rotated at unknown pivot.</Text>
+            <Text fontSize="0.8rem" color="#6b6350" fontFamily="mono" mt={1}>Target not present → -1. Single element → check directly.</Text>
           </Box>
         </Flex>
 
         <Flex gap={4} mb={3}>
           <Box flex="1" p={4} bg="#fdf6f5" borderRadius="lg" border="1px solid" borderColor="#f0ddd4">
             <StepLabel num={4} title="Baseline" />
-            <Text fontSize="0.85rem" color="#6b6350">Scan left to right. O(n). Simple, but ignores the sorted order entirely.</Text>
+            <Text fontSize="0.85rem" color="#6b6350">Linear scan through the array. O(n). Works regardless of rotation but ignores sorted structure.</Text>
           </Box>
           <Box flex="1" p={4} bg="#f0faf4" borderRadius="lg" border="1px solid" borderColor="#cce0d4">
             <StepLabel num={6} title="Refine" />
-            <Text fontSize="0.85rem" color="#6b6350">Check the middle. If target is smaller, discard the right half. If larger, discard the left half. Halves the search space each step — O(log n).</Text>
+            <Text fontSize="0.85rem" color="#6b6350">Modified binary search: at each step, one half is sorted. Check if target falls in the sorted half's range. O(log n).</Text>
           </Box>
         </Flex>
 
         <Box p={3} bg="#fdf6f5" borderRadius="lg" mb={4} borderLeft="3px solid" borderColor="#c94a4a">
           <StepLabel num={5} title="Bottleneck" mb={0.5} />
-          <Text fontSize="0.8rem" color="#6b6350">Linear scan checks every element even though the sorted order tells us exactly which half to skip. Every unchecked element that cannot possibly contain the target is wasted work.</Text>
+          <Text fontSize="0.8rem" color="#6b6350">Linear scan ignores that the array is still mostly sorted. Two binary-searchable segments exist — we need to identify which half is sorted at each step.</Text>
         </Box>
 
         <StepLabel num={3} title="Example" mb={3} />
+        <Text fontSize="0.75rem" color="#8b8589" mb={3}>Rotated: [4, 5, 6, 7, 0, 1, 2] — looking for target = 0</Text>
+
         <Box pb={4}>
           <Flex justify="center" align="flex-end" gap={3} position="relative" minH="120px" pt={12}>
             {DATA.map((val, i) => {
@@ -181,7 +206,7 @@ export function BinarySearchVisualizer() {
       </Box>
 
       <SweepTrace
-        traceTitle="Sweep & Trace: Binary Search"
+        traceTitle="Sweep & Trace: Search Rotated Array"
         steps={TRACE_STEPS}
         code={TRACE_CODE}
       />

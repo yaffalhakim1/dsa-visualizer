@@ -4,7 +4,6 @@ import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
-import { ChapterPrimer } from "./ChapterPrimer";
 import { SweepTrace } from "./SweepTrace";
 
 /**
@@ -241,8 +240,6 @@ export function MaximumSubarrayVisualizer() {
         <Text color="#8b8589" mb={6} fontSize="sm">
           {PROBLEM_CONFIG.subtitle}
         </Text>
-
-        <ChapterPrimer topics={["array", "string"]} visualizing />
 
         <ProblemContext />
 

@@ -22,6 +22,13 @@ import { ProductExceptSelfVisualizer } from "@/components/ProductExceptSelfVisua
 import { MaximumSubarrayVisualizer } from "@/components/MaximumSubarrayVisualizer";
 import { ContainsDuplicateVisualizer } from "@/components/ContainsDuplicateVisualizer";
 import { NextPermutationVisualizer } from "@/components/NextPermutationVisualizer";
+import { SearchRotatedArrayVisualizer } from "@/components/SearchRotatedArrayVisualizer";
+import { FirstLastPositionVisualizer } from "@/components/FirstLastPositionVisualizer";
+import { KokoEatingBananasVisualizer } from "@/components/KokoEatingBananasVisualizer";
+import { Search2DMatrixVisualizer } from "@/components/Search2DMatrixVisualizer";
+import { ArraysStringsConcept } from "@/components/ArraysStringsConcept";
+import { StacksQueuesConcept } from "@/components/StacksQueuesConcept";
+import { BinarySearchConcept } from "@/components/BinarySearchConcept";
 
 function App() {
   return (
@@ -30,6 +37,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="ch6/two-sum" element={<TwoSumHashMap />} />
+          <Route path="ch6/concept" element={<ArraysStringsConcept />} />
           <Route path="ch6/best-time" element={<StockProfitVisualizer />} />
           <Route path="ch6/product-except-self" element={<ProductExceptSelfVisualizer />} />
           <Route path="ch6/maximum-subarray" element={<MaximumSubarrayVisualizer />} />
@@ -40,12 +48,18 @@ function App() {
           <Route path="prefix-sums" element={<PrefixSumVisualizer />} />
           <Route path="linked-lists" element={<LinkedListVisualizer />} />
           <Route path="ch8/valid-parentheses" element={<StackQueueVisualizer />} />
+          <Route path="ch8/concept" element={<StacksQueuesConcept />} />
           <Route path="ch8/min-stack" element={<MinStackVisualizer />} />
           <Route path="ch8/daily-temperatures" element={<DailyTemperaturesVisualizer />} />
           <Route path="ch8/evaluate-rpn" element={<EvaluateRPNVisualizer />} />
           <Route path="ch8/queue-using-stacks" element={<QueueUsingStacksVisualizer />} />
           <Route path="trees" element={<TreeVisualizer />} />
+          <Route path="ch13/concept" element={<BinarySearchConcept />} />
           <Route path="binary-search" element={<BinarySearchVisualizer />} />
+          <Route path="ch13/search-rotated" element={<SearchRotatedArrayVisualizer />} />
+          <Route path="ch13/first-last-position" element={<FirstLastPositionVisualizer />} />
+          <Route path="ch13/koko-eating-bananas" element={<KokoEatingBananasVisualizer />} />
+          <Route path="ch13/search-2d-matrix" element={<Search2DMatrixVisualizer />} />
           <Route path="backtracking" element={<BacktrackingVisualizer />} />
           <Route path="reverse-integer" element={<ReverseIntegerVisualizer />} />
           <Route path="patterns-mistakes" element={<PatternsMistakes />} />

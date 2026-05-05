@@ -4,7 +4,6 @@ import { Box, Text, VStack, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useAlgorithmStore } from "@/store/useAlgorithmStore";
 import { SolutionCompare } from "./SolutionCompare";
 import { StepLabel } from "./StepLabel";
-import { ChapterPrimer } from "./ChapterPrimer";
 
 const DATA = [1, 2, 3, 1];
 
@@ -71,8 +70,6 @@ export function ContainsDuplicateVisualizer() {
       <Box p={8} bg="white" borderRadius="2xl" border="1px solid" borderColor="#e8e0d6" shadow="lg">
         <Heading size="md" mb={1}>Contains Duplicate</Heading>
         <Text color="#8b8589" mb={6} fontSize="sm">Ch 6: Arrays & Strings — Set Lookup</Text>
-
-        <ChapterPrimer topics={["array", "string"]} visualizing />
 
         <Box p={4} bg="#f5f0eb" borderRadius="lg" mb={4}>
           <StepLabel num={1} title="Restate" />
